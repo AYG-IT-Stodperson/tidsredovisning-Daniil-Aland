@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tidapp - Uppgifter</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="desktop-wrapper">
+    <header class="header">Tidapp - Lägg till Uppgift</header>
+
+    <div class="main-layout">
+        <aside class="sidebar">
+            <a href="index.html" class="nav-item">HEM</a>
+            <a href="aktiviteter.html" class="nav-item">AKTIVITETER</a>
+            <a href="uppgifter.html" class="nav-item active">UPPGIFTER</a>
+            <a href="sammanstallning.html" class="nav-item">TOTALT</a>
+        </aside>
+
+
+        <main class="content">
+            <h2>Logga ny uppgift</h2>
+
+            <div class="log-form">
+
+                <div class="input-field width-medium">
+                    <label>Aktivitet</label>
+                    <select>
+                        <option>Cykla</option>
+                        <option>Läxor</option>
+                    </select>
+                </div>
+
+                <div class="input-field width-medium">
+                    <label>Datum</label>
+                    <input type="date">
+                </div>
+
+                <div class="input-field width-small">
+                    <label>Tid (tim)</label>
+                    <input type="number" placeholder="0" step="0.5">
+                </div>
+
+                <div class="input-field width-large">
+                    <label>Beskrivning</label>
+                    <input type="text" placeholder="Vad gjorde du?">
+                </div>
+
+                <button class="save-btn">Spara</button>
+            </div>
+
+            <div class="item-list">
+                <div class="item">
+                    <span>2026-04-22: Träningspass (1 timme)</span>
+                    <div>
+                        <button class="action-btn edit-btn">Ändra</button>
+                        <button class="action-btn delete-btn">Ta bort</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<div class="mobile-wrapper">
+    <header class="header">Tidapp - Lägg till Uppgift</header>
+    <div class="mobile-content">
+        <p><b>Vad har du gjort?</b></p>
+        <div style="display: flex; gap: 5px; margin-bottom: 20px;">
+            <input type="text" placeholder="Beskrivning..." style="flex: 1; padding:10px; border:1px solid #ccc; border-radius:5px;">
+            <button style="background:#60a917; color:black; border:none; padding:10px; border-radius:5px; font-weight:bold;">Spara</button>
+        </div>
+
+        <div class="item-list">
+            <div class="item">
+                <span>Matte (2 timmar)</span>
+                <div class="action-buttons">
+                    <button class="action-btn delete-btn">Ta bort</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mobile-footer">
+        <a href="index.html">Hem</a>
+        <a href="aktiviteter.html">Aktiviteter</a>
+        <a href="uppgifter.html" class="active">Uppgifter</a>
+        <a href="sammanstallning.html">Totalt</a>
+    </footer>
+</div>
+
+</body>
+</html>
