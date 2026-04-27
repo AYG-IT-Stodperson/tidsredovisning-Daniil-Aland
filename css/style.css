@@ -1,21 +1,27 @@
-/* --- 1. GRUNDINSTÄLLNINGAR --- */
+/* 1. GRUNDINSTÄLLNINGAR  */
+/* gör att hela sidan fyller hela höjden */
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
+
+/* Grundstil för hela sidan (font, bakgrund, textfärg) */
 body {
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background-color: #f4f7f6;
     color: #333;
 }
 
+
 * {
     box-sizing: border-box;
 }
 
-/* --- 2. HEADERS (Syns överallt) --- */
+/*  2. HEADERS */
+/* Stil för både dator och mobilheader */
 .header, .mobile-header {
     background-color: #1ba1e2 !important;
     color: white !important;
@@ -26,10 +32,14 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* --- 3. DATORVY (Desktop) --- */
+/* 3. DATORVY */
+/* Gäller för skärmar större än 768px */
 @media (min-width: 769px) {
+
+    /* döljer mobil-layout */
     .mobile-wrapper { display: none; }
 
+    /* wrapper för desktop layout */
     .desktop-wrapper {
         display: flex;
         flex-direction: column;
@@ -37,12 +47,14 @@ body {
         height: 100vh;
     }
 
+    /* huvudlayout med sidebar + content */
     .main-layout {
         display: flex;
         flex: 1;
         overflow: hidden;
     }
 
+    /* sidomeny */
     .sidebar {
         width: 240px;
         background-color: #e1e1e1;
@@ -53,6 +65,7 @@ body {
         border-right: 1px solid #ccc;
     }
 
+    /* menyknappar i sidomenyn */
     .nav-item {
         display: flex;
         align-items: center;
@@ -69,7 +82,7 @@ body {
         transition: all 0.3s ease;
     }
 
-    /* Snygg hover på sidomenyn */
+    /* h effekt på sidomenyn */
     .nav-item:hover, .nav-item.active {
         background-color: #1ba1e2;
         color: white;
@@ -77,13 +90,14 @@ body {
         transform: translateX(5px);
     }
 
+    /* innehållsytan */
     .content {
         flex: 1;
         padding: 40px;
         overflow-y: auto;
     }
 
-    /* Desktop-formulär på en rad */
+    /* formulär i desktop */
     .log-form {
         display: flex !important;
         flex-direction: row !important;
@@ -97,12 +111,14 @@ body {
         margin-bottom: 25px;
     }
 
+    /* wrapper för varje inputfält */
     .input-field {
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
 
+    /* input och dropdown styling */
     .input-field input, .input-field select {
         padding: 8px;
         border: 1px solid #ccc;
@@ -111,10 +127,14 @@ body {
     }
 }
 
-/* --- 4. MOBILVY (Mobile) --- */
+/* 4. MOBILVY */
+/* Gäller för skärmar mindre än 768px */
 @media (max-width: 768px) {
+
+    /* döljer desktop-layout */
     .desktop-wrapper { display: none; }
 
+    /* mobilcontainer */
     .mobile-wrapper {
         display: flex;
         flex-direction: column;
@@ -129,13 +149,14 @@ body {
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
+    /* innehåll i mobil */
     .mobile-content {
         flex: 1;
         padding: 15px;
         overflow-y: auto;
     }
 
-    /* Mobil-formulär - Fixad layout */
+    /* Mobil formulär */
     .log-form {
         display: flex !important;
         flex-direction: column !important;
@@ -147,12 +168,14 @@ body {
         margin-bottom: 20px;
     }
 
+    /* inputfält i mobil */
     .input-field {
         width: 100%;
         display: flex;
         flex-direction: column;
     }
 
+    /* input styling i mobil */
     .input-field input, .input-field select {
         width: 100% !important;
         height: 42px;
@@ -162,6 +185,7 @@ body {
         border-radius: 6px;
     }
 
+    /* footer i mobil */
     .mobile-footer {
         height: 70px;
         background-color: #ffffff;
@@ -171,6 +195,7 @@ body {
         border-top: 1px solid #eee;
     }
 
+    /* länkar i mobilmenyn */
     .mobile-footer a {
         text-decoration: none !important;
         color: #999;
@@ -181,12 +206,16 @@ body {
         align-items: center;
     }
 
+    /* aktiv länk i mobil */
     .mobile-footer a.active {
         color: #1ba1e2;
     }
 }
 
-/* --- 5. RUTER & KNAPPAR (Med snygg hover) --- */
+
+/* 5. RUTER & KNAPPAR */
+
+/* kort/rad för varje item */
 .item {
     background-color: #ffffff !important;
     border: 1px solid #d1d1d1 !important;
@@ -200,7 +229,7 @@ body {
     transition: all 0.2s ease;
 }
 
-/* Snygg hover på själva raden (Desktop) */
+/* hover effekt på item (funkad endast på dator) */
 @media (min-width: 769px) {
     .item:hover {
         border-color: #1ba1e2 !important;
@@ -209,6 +238,7 @@ body {
     }
 }
 
+/* text i item */
 .item span {
     font-size: 14px;
     font-weight: 500;
@@ -216,12 +246,14 @@ body {
     line-height: 1.4;
 }
 
+/* container för knappar */
 .action-buttons {
     display: flex;
     gap: 8px;
     flex-shrink: 0;
 }
 
+/* grundstil för knappar */
 .action-btn {
     padding: 8px 14px;
     border-radius: 6px;
@@ -233,14 +265,18 @@ body {
     transition: opacity 0.2s, transform 0.1s;
 }
 
+/* hover på alla knappar */
 .action-btn:hover {
     opacity: 0.9;
     transform: scale(1.05);
 }
 
-.edit-btn { background-color: #1ba1e2; }
-.delete-btn { background-color: #d93025; }
+/* specifika knappar */
+.edit-btn { background-color: #1ba1e2; }   /* redigera */
+.delete-btn { background-color: #d93025; } /* ta bort */
 
+
+/* spara och lägg till knappar */
 .save-btn, .add-btn, .add-btn-mobile {
     background-color: #60a917;
     color: white;
@@ -252,10 +288,14 @@ body {
     transition: background-color 0.2s;
 }
 
+
+/* hover på gröna knappar */
 .save-btn:hover, .add-btn:hover {
     background-color: #4e8a12;
 }
 
+
+/* mobil "lägg till" knapp */
 .add-btn-mobile {
     width: 100%;
     border-radius: 12px;
@@ -263,6 +303,8 @@ body {
     padding: 15px;
 }
 
+
+/* label till inputfält */
 .input-field label {
     font-size: 12px;
     font-weight: bold;
