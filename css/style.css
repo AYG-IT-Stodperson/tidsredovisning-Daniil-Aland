@@ -6,8 +6,8 @@ html, body {
 }
 
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f4f7f6;
     color: #333;
 }
 
@@ -15,25 +15,32 @@ body {
     box-sizing: border-box;
 }
 
-/* Döljer båda vyerna initialt för att undvika flimmer */
-.desktop-wrapper, .mobile-wrapper {
-    display: none;
+/* --- 2. HEADERS (Syns överallt) --- */
+.header, .mobile-header {
+    background-color: #1ba1e2 !important;
+    color: white !important;
+    padding: 15px 20px;
+    font-weight: bold;
+    width: 100%;
+    display: block !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* --- 2. DATORVY (Desktop) --- */
+/* --- 3. DATORVY (Desktop) --- */
 @media (min-width: 769px) {
+    .mobile-wrapper { display: none; }
+
     .desktop-wrapper {
         display: flex;
         flex-direction: column;
         width: 100%;
         height: 100vh;
-        background-color: #f5f5f5;
     }
 
     .main-layout {
         display: flex;
         flex: 1;
-        height: 100%;
+        overflow: hidden;
     }
 
     .sidebar {
@@ -53,211 +60,212 @@ body {
         width: 85%;
         min-height: 45px;
         margin-bottom: 15px;
-        font-size: 13px;
         text-decoration: none;
         color: #333;
         background-color: #f0f0f0;
         border: 1px solid #bbb;
         border-radius: 6px;
         font-weight: bold;
-        transition: 0.2s;
+        transition: all 0.3s ease;
     }
 
-    /* HOVER-EFFEKT FÖR SIDOMENY */
-    .nav-item:hover {
+    /* Snygg hover på sidomenyn */
+    .nav-item:hover, .nav-item.active {
         background-color: #1ba1e2;
         color: white;
         border-color: #10739e;
-    }
-
-    .nav-item.active {
-        background-color: #1ba1e2;
-        color: white;
-        border-color: #10739e;
+        transform: translateX(5px);
     }
 
     .content {
         flex: 1;
         padding: 40px;
-        background-color: #ffffff;
         overflow-y: auto;
-        position: relative; /* För att kunna placera loggan absolut om man vill */
+    }
+
+    /* Desktop-formulär på en rad */
+    .log-form {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-end !important;
+        gap: 15px;
+        background-color: #ffffff;
+        padding: 20px;
+        border: 1px solid #d1d1d1;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+    }
+
+    .input-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .input-field input, .input-field select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 38px;
     }
 }
 
-/* --- 3. MOBILVY (Mobile) --- */
+/* --- 4. MOBILVY (Mobile) --- */
 @media (max-width: 768px) {
+    .desktop-wrapper { display: none; }
+
     .mobile-wrapper {
-        display: block;
-        width: 320px;
-        height: 580px;
+        display: flex;
+        flex-direction: column;
+        width: 360px;
+        height: 720px;
         border: 2px solid #10739e;
-        background-color: #f5f5f5;
+        background-color: #f8f9fa;
         position: relative;
-        border-radius: 15px;
+        border-radius: 25px;
         overflow: hidden;
         margin: 20px auto;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-
-    .mobile-header {
-        background-color: #1ba1e2;
-        color: white;
-        padding: 15px;
-        font-weight: bold;
-        text-align: left;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
     .mobile-content {
+        flex: 1;
         padding: 15px;
-        height: calc(100% - 110px);
         overflow-y: auto;
     }
 
-    .mobile-footer {
-        position: absolute;
-        bottom: 0;
+    /* Mobil-formulär - Fixad layout */
+    .log-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #d1d1d1;
+        margin-bottom: 20px;
+    }
+
+    .input-field {
         width: 100%;
-        background-color: #e1e1e1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-field input, .input-field select {
+        width: 100% !important;
+        height: 42px;
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .mobile-footer {
+        height: 70px;
+        background-color: #ffffff;
         display: flex;
         justify-content: space-around;
-        padding: 15px 0;
-        border-top: 1px solid #ccc;
+        align-items: center;
+        border-top: 1px solid #eee;
     }
 
     .mobile-footer a {
-        text-decoration: none;
-        color: #666;
+        text-decoration: none !important;
+        color: #999;
         font-size: 11px;
         font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .mobile-footer a.active {
         color: #1ba1e2;
-        text-decoration: underline;
-    }
-
-    /* Gör inmatningsformuläret mobilvänligt */
-    .log-form {
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
-    .input-field {
-        width: 100% !important;
     }
 }
 
-/* --- 4. FORMULÄR (Uppgifter-sidan) --- */
-.log-form {
+/* --- 5. RUTER & KNAPPAR (Med snygg hover) --- */
+.item {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d1d1 !important;
+    padding: 18px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: flex-end;
-    background: #f9f9f9;
-    padding: 20px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    transition: all 0.2s ease;
 }
 
-.input-field {
+/* Snygg hover på själva raden (Desktop) */
+@media (min-width: 769px) {
+    .item:hover {
+        border-color: #1ba1e2 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+}
+
+.item span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+    line-height: 1.4;
+}
+
+.action-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.action-btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.edit-btn { background-color: #1ba1e2; }
+.delete-btn { background-color: #d93025; }
+
+.save-btn, .add-btn, .add-btn-mobile {
+    background-color: #60a917;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-btn:hover, .add-btn:hover {
+    background-color: #4e8a12;
+}
+
+.add-btn-mobile {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    padding: 15px;
 }
 
 .input-field label {
     font-size: 12px;
     font-weight: bold;
     color: #666;
-}
-
-.input-field input,
-.input-field select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-/* Olika bredder för fälten */
-.width-small { width: 80px; }
-.width-medium { width: 140px; }
-.width-large { flex: 1; min-width: 200px; }
-
-/* --- 5. GEMENSAMMA DELAR --- */
-.header {
-    background-color: #1ba1e2;
-    color: white;
-    padding: 15px 20px;
-    font-weight: bold;
-}
-
-.item-list {
-    margin-top: 20px;
-}
-
-.item {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.action-btn {
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-    color: #000000; /* SVART TEXT */
-    text-decoration: none;
-    margin-left: 5px;
-    font-family: inherit;
-}
-
-.edit-btn { background-color: #1ba1e2; }
-.delete-btn { background-color: #d93025; }
-
-.save-btn {
-    background-color: #60a917;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    height: 40px;
-}
-
-.add-btn {
-    background-color: #dae8fc;
-    border: 1px solid #6c8ebf;
-    color: #000000;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background-color 0.2s;
-}
-
-.add-btn:hover {
-    background-color: #b9d1f3;
-}
-
-/* Logga uppe till höger på startsidan */
-.top-right-logo {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    width: 180px;
-    height: auto;
-    z-index: 1;
+    margin-bottom: 2px;
 }

@@ -1,92 +1,113 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="IYGaeqK2h2XBtHOK3l0I">
-    <mxGraphModel dx="1069" dy="647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1299" dy="677" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="d1_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
-          <mxGeometry height="300" width="450" x="510" y="40" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;Tidapp - Mina Aktiviteter&lt;/b&gt;&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="450" x="510" y="40" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=center;verticalAlign=top;spacingTop=20;fontSize=9;" value="&lt;font face=&quot;Comic Sans MS&quot; size=&quot;1&quot;&gt;[ HEM ]&lt;br&gt;&lt;br&gt;[ AKTIVITETER ]&lt;br&gt;&lt;br&gt;[ UPPGIFTER ]&lt;br&gt;&lt;br&gt;[ TOTALT]&lt;/font&gt;" vertex="1">
-          <mxGeometry height="270" width="80" x="510" y="70" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_content" parent="1" style="text;html=1;fontStyle=1" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;Hantera Aktiviteter&lt;/font&gt;" vertex="1">
-          <mxGeometry height="20" width="150" x="605" y="85" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_add" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="[+] Skapa ny aktivitet" vertex="1">
-          <mxGeometry height="25" width="130" x="605" y="115" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_item1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#cccccc;align=left;spacingLeft=10;fontSize=10;" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;Cykla&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="340" x="605" y="170" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_edit1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=none;fontSize=9;fontStyle=1" value="Ändra" vertex="1">
-          <mxGeometry height="18" width="45" x="845" y="176" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_del1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d93025;fontColor=#ffffff;strokeColor=none;fontSize=9;fontStyle=1" value="Ta bort" vertex="1">
-          <mxGeometry height="18" width="45" x="895" y="176" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_item2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#cccccc;align=left;spacingLeft=10;fontSize=10;" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;Läxor&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="340" x="605" y="205" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_edit2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=none;fontSize=9;fontStyle=1" value="Ändra" vertex="1">
-          <mxGeometry height="18" width="45" x="845" y="211" as="geometry" />
-        </mxCell>
-        <mxCell id="d1_del2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d93025;fontColor=#ffffff;strokeColor=none;fontSize=9;fontStyle=1" value="Ta bort" vertex="1">
-          <mxGeometry height="18" width="45" x="895" y="211" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
-          <mxGeometry height="300" width="450" x="510" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;Tidapp - Lägg till Uppgift&lt;/b&gt;&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="450" x="510" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=center;verticalAlign=top;spacingTop=20;fontSize=9;" value="&lt;font face=&quot;Comic Sans MS&quot; size=&quot;1&quot;&gt;[ HEM ]&lt;br&gt;&lt;br&gt;[ AKTIVITETER ]&lt;br&gt;&lt;br&gt;[ UPPGIFTER ]&lt;br&gt;&lt;br&gt;[ TOTALT ]&lt;/font&gt;" vertex="1">
-          <mxGeometry height="270" width="80" x="510" y="410" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_content" parent="1" style="text;html=1;fontStyle=1" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;Logga tid för: Cykla&lt;/font&gt;" vertex="1">
-          <mxGeometry height="20" width="200" x="605" y="425" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_in" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;align=left;spacingLeft=5;fillColor=none;" value="Beskrivning..." vertex="1">
-          <mxGeometry height="25" width="180" x="605" y="455" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_btn" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;fontSize=10;fontStyle=1" value="Spara" vertex="1">
-          <mxGeometry height="25" width="60" x="795" y="455" as="geometry" />
-        </mxCell>
-        <mxCell id="d2_log1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;align=left;spacingLeft=10;" value="2026-04-22: Träningspass (1 timme)   [Ta bort]" vertex="1">
-          <mxGeometry height="30" width="340" x="605" y="495" as="geometry" />
-        </mxCell>
-        <mxCell id="d3_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
-          <mxGeometry height="300" width="450" x="20" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="d3_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;Tidapp - Sammanställning&lt;/b&gt;&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="450" x="20" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="d3_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=center;verticalAlign=top;spacingTop=20;fontSize=9;" value="&lt;font face=&quot;Comic Sans MS&quot; size=&quot;1&quot;&gt;[ HEM ]&lt;br&gt;&lt;br&gt;[ AKTIVITETER ]&lt;br&gt;&lt;br&gt;[ UPPGIFTER ]&lt;br&gt;&lt;br&gt;[ TOTALT]&lt;/font&gt;" vertex="1">
-          <mxGeometry height="270" width="80" x="20" y="410" as="geometry" />
-        </mxCell>
-        <mxCell id="d3_content" parent="1" style="text;html=1;fontStyle=1" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;Total Tidrapport&lt;/font&gt;" vertex="1">
-          <mxGeometry height="20" width="150" x="115" y="425" as="geometry" />
-        </mxCell>
-        <mxCell id="d3_report" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;spacingLeft=15;fontSize=11;" value="Cykla: 5 timmar totalt&#xa;&#xa;Läxor: 3 timmar totalt&#xa;&#xa;---------------------------&#xa;TOTAL TID: 8 timmar" vertex="1">
-          <mxGeometry height="150" width="340" x="115" y="460" as="geometry" />
-        </mxCell>
-        <mxCell id="xMmezDsJBuLaI5peywbn-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;gradientColor=none;" value="" vertex="1">
+        <mxCell id="h_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
           <mxGeometry height="300" width="450" x="20" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="xMmezDsJBuLaI5peywbn-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;font face=&quot;Comic Sans MS&quot;&gt;&lt;b&gt;Tidapp - Hem&lt;/b&gt;&lt;/font&gt;" vertex="1">
+        <mxCell id="h_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;b&gt;Tidapp - Hem&lt;/b&gt;" vertex="1">
           <mxGeometry height="30" width="450" x="20" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="xMmezDsJBuLaI5peywbn-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=center;verticalAlign=top;spacingTop=20;fontSize=9;gradientColor=none;strokeColor=default;" value="&lt;font face=&quot;Comic Sans MS&quot; size=&quot;1&quot; style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;[ HEM ]&lt;br&gt;&lt;br&gt;[ AKTIVITETER ]&lt;br&gt;&lt;br&gt;[ UPPGIFTER ]&lt;br&gt;&lt;br&gt;[ TOTALT]&lt;/font&gt;" vertex="1">
+        <mxCell id="h_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;align=center;verticalAlign=top;spacingTop=20;fontSize=9;strokeColor=#cccccc;" value="[ HEM ]&#xa;&#xa;[ AKTIVITETER ]&#xa;&#xa;[ UPPGIFTER ]&#xa;&#xa;[ TOTALT ]" vertex="1">
           <mxGeometry height="270" width="80" x="20" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="xMmezDsJBuLaI5peywbn-4" parent="1" style="text;html=1;fontStyle=1;fillColor=none;" value="&lt;font face=&quot;Helvetica&quot;&gt;Välkommen till Tidappen!&lt;/font&gt;" vertex="1">
+        <mxCell id="h_content" parent="1" style="text;html=1;fontStyle=1" value="Välkommen till Tidappen!" vertex="1">
           <mxGeometry height="20" width="150" x="115" y="85" as="geometry" />
         </mxCell>
-        <mxCell id="xMmezDsJBuLaI5peywbn-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;" value="&lt;h3 style=&quot;box-sizing: border-box;&quot;&gt;&lt;font face=&quot;Comic Sans MS&quot; style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-size: 10px;&quot;&gt;Detta är din startsida.&amp;nbsp;&lt;/font&gt;&lt;/h3&gt;" vertex="1">
+        <mxCell id="h_text" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;spacingLeft=10;" value="Detta är din startsida." vertex="1">
           <mxGeometry height="46" width="135" x="115" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="a_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="300" width="450" x="510" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;b&gt;Tidapp - Mina Aktiviteter&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="450" x="510" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;align=center;verticalAlign=top;spacingTop=20;fontSize=9;strokeColor=#cccccc;" value="[ HEM ]&#xa;&#xa;[ AKTIVITETER ]&#xa;&#xa;[ UPPGIFTER ]&#xa;&#xa;[ TOTALT ]" vertex="1">
+          <mxGeometry height="270" width="80" x="510" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_content" parent="1" style="text;html=1;fontStyle=1" value="Hantera Aktiviteter" vertex="1">
+          <mxGeometry height="20" width="150" x="605" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="a_add" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;fontSize=10;" value="[+] Skapa ny aktivitet" vertex="1">
+          <mxGeometry height="25" width="130" x="605" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="a_item1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#cccccc;align=left;spacingLeft=10;fontSize=10;" value="Cykla" vertex="1">
+          <mxGeometry height="30" width="340" x="605" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="a_edit1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=none;fontSize=9;fontStyle=1" value="Ändra" vertex="1">
+          <mxGeometry height="18" width="45" x="845" y="176" as="geometry" />
+        </mxCell>
+        <mxCell id="a_del1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d93025;fontColor=#ffffff;strokeColor=none;fontSize=9;fontStyle=1" value="Ta bort" vertex="1">
+          <mxGeometry height="18" width="45" x="895" y="176" as="geometry" />
+        </mxCell>
+        <mxCell id="u_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="300" width="450" x="510" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="u_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;b&gt;Tidapp - Lägg till Uppgift&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="450" x="510" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="u_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;align=center;verticalAlign=top;spacingTop=20;fontSize=9;strokeColor=#cccccc;" value="[ HEM ]&#xa;&#xa;[ AKTIVITETER ]&#xa;&#xa;[ UPPGIFTER ]&#xa;&#xa;[ TOTALT ]" vertex="1">
+          <mxGeometry height="270" width="80" x="510" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="u_title" parent="1" style="text;html=1;fontStyle=1;fontSize=14;" value="Logga ny uppgift" vertex="1">
+          <mxGeometry height="20" width="200" x="605" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="u_input_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#dddddd;" value="" vertex="1">
+          <mxGeometry height="60" width="340" x="605" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="u_in_act" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=8;align=left;spacingLeft=5;" value="Cykla   ▼" vertex="1">
+          <mxGeometry height="20" width="60" x="615" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="u_lbl_act" parent="1" style="text;html=1;fontSize=8;fontStyle=1" value="Aktivitet" vertex="1">
+          <mxGeometry height="15" width="50" x="615" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="u_in_date" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=8;align=left;spacingLeft=5;" value="åååå-mm-dd&amp;nbsp;" vertex="1">
+          <mxGeometry height="20" width="75" x="680" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="u_lbl_date" parent="1" style="text;html=1;fontSize=8;fontStyle=1" value="Datum" vertex="1">
+          <mxGeometry height="15" width="50" x="680" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="u_in_time" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=8;align=center;" value="0" vertex="1">
+          <mxGeometry height="20" width="30" x="760" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="u_lbl_time" parent="1" style="text;html=1;fontSize=8;fontStyle=1" value="Tid (tim)" vertex="1">
+          <mxGeometry height="15" width="40" x="760" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="u_in_desc" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=8;align=left;spacingLeft=5;fontColor=#999999;" value="Vad gjorde du?" vertex="1">
+          <mxGeometry height="20" width="100" x="795" y="475" as="geometry" />
+        </mxCell>
+        <mxCell id="u_lbl_desc" parent="1" style="text;html=1;fontSize=8;fontStyle=1" value="Beskrivning" vertex="1">
+          <mxGeometry height="15" width="70" x="795" y="458" as="geometry" />
+        </mxCell>
+        <mxCell id="u_btn_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;fontSize=9;fontStyle=1;strokeColor=none;" value="Spara" vertex="1">
+          <mxGeometry height="22" width="40" x="900" y="474" as="geometry" />
+        </mxCell>
+        <mxCell id="u_log_row" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#dddddd;align=left;spacingLeft=10;fontSize=9;" value="2026-04-22: Träningspass (1 timme)" vertex="1">
+          <mxGeometry height="35" width="340" x="605" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="u_btn_edit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;fontSize=8;strokeColor=none;" value="Ändra" vertex="1">
+          <mxGeometry height="15" width="30" x="870" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="u_btn_del" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d93025;fontColor=#ffffff;fontSize=8;strokeColor=none;" value="Ta bort" vertex="1">
+          <mxGeometry height="15" width="30" x="905" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="t_frame" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#10739e;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="300" width="450" x="20" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="t_head" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;align=left;spacingLeft=15;" value="&lt;b&gt;Tidapp - Sammanställning&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="450" x="20" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="t_side" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;align=center;verticalAlign=top;spacingTop=20;fontSize=9;strokeColor=#cccccc;" value="[ HEM ]&#xa;&#xa;[ AKTIVITETER ]&#xa;&#xa;[ UPPGIFTER ]&#xa;&#xa;[ TOTALT ]" vertex="1">
+          <mxGeometry height="270" width="80" x="20" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="t_content" parent="1" style="text;html=1;fontStyle=1" value="Total Tidrapport" vertex="1">
+          <mxGeometry height="20" width="150" x="115" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;align=left;spacingLeft=15;fontSize=11;" value="Cykla: 5 timmar totalt&#xa;&#xa;Läxor: 3 timmar totalt&#xa;&#xa;---------------------------&#xa;TOTAL TID: 8 timmar" vertex="1">
+          <mxGeometry height="150" width="340" x="115" y="460" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
