@@ -51,7 +51,7 @@ function hamtaAllaAktiviteter(): Response {
     foreach ($result as $post) {
         $rad=new stdClass();
         $rad->id=$post["id"];
-      $rad->aktivitet=$post["aktivitet"];
+        $rad->activity=$post["aktivitet"];
         $retur[]=$rad;
     }
 
@@ -67,6 +67,36 @@ function hamtaAllaAktiviteter(): Response {
  * @return Response
  */
 function hamtaEnskildAktivitet(string $id): Response {
+
+    // Kontrollera indata
+    $aktivitetsId=filter_var($id, FILTER_VALIDATE_INT);
+
+    if($aktivitetsId===false) {
+        $retur=new stdClass();
+        $retur->error=["Bad request", "Ogiltigt id"];
+        return new Response($retur, 400);
+    }
+    // Koppla mot databas
+    $db = connectDb();
+
+    // Skicka fråga
+    $stmt = $db->prepare("SELECT id, aktivitet FROM aktiviteter where id=:id");
+    $stmt->execute(["id"=>$aktivitetsId]);
+
+    // Hantera svar
+    if($row = $stmt->fetch()) {
+        $retur = new stdClass();
+        $retur->id = $row["id"];
+        $retur->activity = $row["aktivitet"];
+
+        return new Response($retur);
+
+    } else {
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Angivet id ($aktivitetsId) fanns inte i databasen"];
+
+        return new Response($retur, 400);
+    }
 }
 
 /**
