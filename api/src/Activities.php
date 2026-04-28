@@ -104,22 +104,42 @@ function hamtaEnskildAktivitet(string $id): Response {
  * @param string $aktivitet Aktivitet som ska sparas
  * @return Response
  */
-function sparaNyAktivitet(string $aktivitet): Response {
+function sparaNyAktivitet(string $aktivitet): Response
+{
+
+
+// Sanera indata
+    $saneradAktivitet = htmlentities($aktivitet);
+
+    // Koppla mot databas
+    $db = connectDb();
+
+    // Skicka fråga
+    $stmt = $db->prepare("INSERT INTO aktiviteter (aktivitet) VALUES (:aktivitet)");
+    $svar = $stmt->execute(["aktivitet" => $saneradAktivitet]);
+
+    // Kontrollera resultat och returnera svar
+    if ($svar === true) {
+        $retur = new stdClass();
+        $retur->id = $db->lastInsertId();
+        $retur->meddelande = ["Spara lyckades", "1 post lads till"];
+        return new Response($retur);
+    } else {
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Något gik fel vid spara", $stmt->errorInfo()];
+        return new Response($retur, 400);
+    }
 }
 
-/**
- * Uppdaterar angivet id med ny text
- * @param string $id Id för posten som ska uppdateras
- * @param string $aktivitet Ny text
- * @return Response
- */
-function uppdateraAktivitet(string $id, string $aktivitet): Response {
-}
+function uppdateraAktivitet(string $aktivitet):Response{}
+
+
+
+
 
 /**
  * Raderar en aktivitet med angivet id
  * @param string $id Id för posten som ska raderas
  * @return Response
  */
-function raderaAktivetet(string $id): Response {
-}
+function raderaAktivetet(string $id): Response{}
