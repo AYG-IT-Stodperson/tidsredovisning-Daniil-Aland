@@ -131,9 +131,46 @@ function sparaNyAktivitet(string $aktivitet): Response
     }
 }
 
-function uppdateraAktivitet(string $aktivitet):Response{}
+function uppdateraAktivitet(string $id, string $aktivitet):Response
+{
 
 
+    // Kontrollera indata
+    $kontrolleratID = filter_var($id, FILTER_VALIDATE_INT);
+    $saneradAktivitet = htmlentities($aktivitet);
+
+    if ($kontrolleratID === false) {
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Ogiltigt id"];
+        return new Response($retur, 400);
+    }
+
+    // Koppla databas
+    $db = connectDb();
+
+    // Skicka uppdatering
+    $stmt = $db->prepare("UPDATE aktiviteter SET aktivitet=:aktivitet WHERE id=:id");
+    $stmt->execute(["aktivitet" => $saneradAktivitet, "id" => $kontrolleratID]);
+
+    // Kontrollera resultat och skicka svar
+    if ($stmt->rowCount() === 1) {
+        $retur = new stdClass();
+        $retur->result = true;
+        $retur->meddelande = ["Uppdatera lyckades", "1 rad uppdaterades"];
+        return new Response($retur);
+    } elseif ($stmt->rowCount() === 0) {
+        $retur = new stdClass();
+        $retur->result = false;
+        $retur->meddelande = ["Uppdatera misslyckades", "Inga rader uppdaterades"];
+        return new Response($retur);
+    } else {
+        // Hit borde vi aldirg komma!
+        $retur = new stdClass();
+        $retur->result = true;
+        $retur->meddelande = ["Hoppsan", "Uppdatera lyckades", $stmt->rowCount() . " rader uppdaterades!"];
+        return new Response($retur);
+    }
+}
 
 
 
