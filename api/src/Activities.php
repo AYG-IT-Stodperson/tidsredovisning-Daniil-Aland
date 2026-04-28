@@ -104,6 +104,10 @@ function hamtaEnskildAktivitet(string $id): Response {
  * @param string $aktivitet Aktivitet som ska sparas
  * @return Response
  */
+
+
+
+
 function sparaNyAktivitet(string $aktivitet): Response
 {
 
@@ -115,8 +119,14 @@ function sparaNyAktivitet(string $aktivitet): Response
     $db = connectDb();
 
     // Skicka fråga
+    try {
     $stmt = $db->prepare("INSERT INTO aktiviteter (aktivitet) VALUES (:aktivitet)");
     $svar = $stmt->execute(["aktivitet" => $saneradAktivitet]);
+    } catch (Exception $e) {
+        $retur=new stdClass();
+        $retur->error=["Bad request", "Kan inte spara flera aktiviteter med texten '$saneradAktivitet' "];
+       return new Response($retur, 400);
+    }
 
     // Kontrollera resultat och returnera svar
     if ($svar === true) {
@@ -130,6 +140,8 @@ function sparaNyAktivitet(string $aktivitet): Response
         return new Response($retur, 400);
     }
 }
+
+
 
 function uppdateraAktivitet(string $id, string $aktivitet):Response
 {
@@ -174,9 +186,49 @@ function uppdateraAktivitet(string $id, string $aktivitet):Response
 
 
 
-/**
- * Raderar en aktivitet med angivet id
- * @param string $id Id för posten som ska raderas
- * @return Response
- */
-function raderaAktivetet(string $id): Response{}
+function raderaAktivetet(string $id): Response{
+
+    // Kontrollera indata
+    $kontrolleratID = filter_var($id, FILTER_VALIDATE_INT);
+
+    if($kontrolleratID===false) {
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Ogiltigt id"];
+        return new Response($retur, 400);
+    }
+
+    // Koppla databas
+    $db = connectDb();
+
+    // Skicka fråga
+    try {
+        $stmt = $db->prepare("DELETE FROM aktiviteter where id=:id");
+        $stmt->execute(["id"=>$kontrolleratID]);
+    } catch (Exception $e) {
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Kan inte radera en aktivitet om det finns sparade uppgifter"];
+        return new Response($retur, 400);
+    }
+
+
+
+    // Kontrollera resultat och returnera svar
+    if ($stmt->rowCount()>0) {
+        $retur = new stdClass();
+        $retur->result = true;
+        $retur->meddelande=["Radera lyckades", $stmt->rowCount() . " rader raderades"];
+        return new Response($retur);
+
+    } else {
+        $retur = new stdClass();
+        $retur->result = false;
+        $retur->meddelande=["Radera misslyckades", "inga poster raderades"];
+        return new Response($retur);
+    }
+}
+
+
+
+
+
+
