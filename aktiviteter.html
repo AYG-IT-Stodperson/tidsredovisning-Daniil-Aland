@@ -10,8 +10,6 @@
 
 <div class="desktop-wrapper">
     <header class="header">Tidapp - Mina Aktiviteter</header>
-
-
     <div class="main-layout">
         <aside class="sidebar">
             <a href="index.html" class="nav-item">HEM</a>
@@ -19,81 +17,64 @@
             <a href="uppgifter.html" class="nav-item">UPPGIFTER</a>
             <a href="sammanstallning.html" class="nav-item">TOTALT</a>
         </aside>
-
         <main class="content">
             <h2>Hantera Aktiviteter</h2>
-            <button class="add-btn"> + Skapa ny aktivitet</button>
+
+            <button class="add-btn">+ Skapa ny aktivitet</button>
 
             <div class="item-list">
                 <div class="item">
                     <span>Cykla</span>
                     <div class="action-buttons">
-                        <button class="action-btn edit-btn">Ändra</button>
+                        <a href="#redigera-aktivitet-1" class="action-btn edit-btn" style="text-decoration:none;">Ändra</a>
                         <button class="action-btn delete-btn">Ta bort</button>
                     </div>
                 </div>
-
                 <div class="item">
                     <span>Läxor</span>
                     <div class="action-buttons">
-                        <button class="action-btn edit-btn">Ändra</button>
+                        <a href="#redigera-aktivitet-2" class="action-btn edit-btn" style="text-decoration:none;">Ändra</a>
                         <button class="action-btn delete-btn">Ta bort</button>
                     </div>
                 </div>
             </div>
+
+            <div id="redigera-aktivitet-1" class="hidden-section">
+                <h3>Redigera Aktivitet (Cykla)</h3>
+                <div class="edit-box-content">
+                    <div class="input-field">
+                        <label>Namn på aktivitet</label>
+                        <input type="text" value="Cykla">
+                    </div>
+
+                    <div class="edit-buttons">
+                        <a href="#" class="save-btn" style="text-decoration:none;">Spara</a>
+                        <a href="#" class="action-btn cancel-btn" style="text-decoration:none;">Avbryt</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="redigera-aktivitet-2" class="hidden-section">
+                <h3>Redigera Aktivitet (Läxor)</h3>
+                <div class="edit-box-content">
+                    <div class="input-field">
+                        <label>Namn på aktivitet</label>
+                        <input type="text" value="Läxor">
+                    </div>
+
+                    <div class="edit-buttons">
+                        <a href="#" class="save-btn" style="text-decoration:none;">Spara</a>
+                        <a href="#" class="action-btn cancel-btn" style="text-decoration:none;">Avbryt</a>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 </div>
 
-
-
 <div class="mobile-wrapper">
-    <header class="header">Tidapp - Aktiviteter</header>
-    <div class="mobile-content">
-        <button class="add-btn-mobile">[+] Lägg till ny aktivitet</button>
-
-        <div class="item-list">
-            <div class="item">
-                <span>Cykla</span>
-                <div class="action-buttons">
-                    <button class="action-btn edit-btn">Ändra</button>
-                    <button class="action-btn delete-btn">Ta bort</button>
-                </div>
-            </div>
-
-
-            <div class="item">
-                <span>Läxor</span>
-                <div class="action-buttons">
-                    <button class="action-btn edit-btn">Ändra</button>
-                    <button class="action-btn delete-btn">Ta bort</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <footer class="mobile-footer">
-        <a href="index.html" class="nav-item">
-            <span class="icon icon-home"></span>
-            <span class="nav-text">Hem</span>
-        </a>
-        <a href="aktiviteter.html" class="nav-item active">
-            <span class="icon icon-list"></span>
-            <span class="nav-text">Aktiviteter</span>
-        </a>
-        <a href="uppgifter.html" class="nav-item">
-            <span class="icon icon-check"></span>
-            <span class="nav-text">Uppgifter</span>
-        </a>
-        <a href="sammanstallning.html" class="nav-item">
-            <span class="icon icon-chart"></span>
-            <span class="nav-text">Totalt</span>
-        </a>
-    </footer>
-
-
 </div>
+
 </body>
 </html>

@@ -24,14 +24,15 @@ function getRoute(string $querystring, RequestMethod $method = RequestMethod::GE
         case 1:
         case 2:
         case 3:
+        case 4:
             $rutt = "/";
             break;
-        case 4:
-            $rutt = "/{$uri[3]}/";
+        case 5:
+            $rutt = "/{$uri[4]}/";
             break;
         default :
-            $rutt = "/{$uri[3]}/";
-            $parametrar = array_slice($uri, 4);
+            $rutt = "/{$uri[4]}/";
+            $parametrar = array_slice($uri, 5);
     }
 
     // Kontrollera inskickad metod och läs av eventuell $_POST[action]

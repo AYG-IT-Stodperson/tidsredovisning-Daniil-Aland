@@ -1,27 +1,22 @@
-/* 1. GRUNDINSTÄLLNINGAR  */
-/* gör att hela sidan fyller hela höjden */
-
+/* 1. GRUNDINSTÄLLNINGAR */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-
-/* Grundstil för hela sidan (font, bakgrund, textfärg) */
 body {
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background-color: #f4f7f6;
     color: #333;
+    overflow-x: hidden;
 }
-
 
 * {
     box-sizing: border-box;
 }
 
-/*  2. HEADERS */
-/* Stil för både dator och mobilheader */
+/* 2. HEADERS */
 .header, .mobile-header {
     background-color: #1ba1e2 !important;
     color: white !important;
@@ -32,29 +27,23 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* 3. DATORVY */
-/* Gäller för skärmar större än 768px */
+/* 3. DATORVY (Desktop) */
 @media (min-width: 769px) {
-
-    /* döljer mobil-layout */
     .mobile-wrapper { display: none; }
 
-    /* wrapper för desktop layout */
     .desktop-wrapper {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
     }
 
-    /* huvudlayout med sidebar + content */
     .main-layout {
         display: flex;
         flex: 1;
-        overflow: hidden;
+        height: calc(100vh - 54px);
     }
 
-    /* sidomeny */
     .sidebar {
         width: 240px;
         background-color: #e1e1e1;
@@ -65,7 +54,6 @@ body {
         border-right: 1px solid #ccc;
     }
 
-    /* menyknappar i sidomenyn */
     .nav-item {
         display: flex;
         align-items: center;
@@ -82,26 +70,22 @@ body {
         transition: all 0.3s ease;
     }
 
-    /* h effekt på sidomenyn */
     .nav-item:hover, .nav-item.active {
         background-color: #1ba1e2;
         color: white;
         border-color: #10739e;
-        transform: translateX(5px);
     }
 
-    /* innehållsytan */
     .content {
         flex: 1;
         padding: 40px;
         overflow-y: auto;
     }
 
-    /* formulär i desktop */
     .log-form {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: flex-end !important;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
         gap: 15px;
         background-color: #ffffff;
         padding: 20px;
@@ -111,14 +95,12 @@ body {
         margin-bottom: 25px;
     }
 
-    /* wrapper för varje inputfält */
     .input-field {
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
 
-    /* input och dropdown styling */
     .input-field input, .input-field select {
         padding: 8px;
         border: 1px solid #ccc;
@@ -128,13 +110,9 @@ body {
 }
 
 /* 4. MOBILVY */
-/* Gäller för skärmar mindre än 768px */
 @media (max-width: 768px) {
-
-    /* döljer desktop-layout */
     .desktop-wrapper { display: none; }
 
-    /* mobilcontainer */
     .mobile-wrapper {
         display: flex;
         flex-direction: column;
@@ -142,21 +120,19 @@ body {
         height: 720px;
         border: 2px solid #10739e;
         background-color: #f8f9fa;
-        position: relative;
+        margin: 20px auto;
         border-radius: 25px;
         overflow: hidden;
-        margin: 20px auto;
+        position: relative;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    /* innehåll i mobil */
     .mobile-content {
         flex: 1;
         padding: 15px;
         overflow-y: auto;
     }
 
-    /* Mobil formulär */
     .log-form {
         display: flex !important;
         flex-direction: column !important;
@@ -164,28 +140,8 @@ body {
         background: white;
         padding: 15px;
         border-radius: 12px;
-        border: 1px solid #d1d1d1;
-        margin-bottom: 20px;
     }
 
-    /* inputfält i mobil */
-    .input-field {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* input styling i mobil */
-    .input-field input, .input-field select {
-        width: 100% !important;
-        height: 42px;
-        font-size: 14px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-    }
-
-    /* footer i mobil */
     .mobile-footer {
         height: 70px;
         background-color: #ffffff;
@@ -194,31 +150,12 @@ body {
         align-items: center;
         border-top: 1px solid #eee;
     }
-
-    /* länkar i mobilmenyn */
-    .mobile-footer a {
-        text-decoration: none !important;
-        color: #999;
-        font-size: 11px;
-        font-weight: bold;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* aktiv länk i mobil */
-    .mobile-footer a.active {
-        color: #1ba1e2;
-    }
 }
 
-
-/* 5. RUTER & KNAPPAR */
-
-/* kort/rad för varje item */
+/* 5. ITEMS (Listan med uppgifter) */
 .item {
-    background-color: #ffffff !important;
-    border: 1px solid #d1d1d1 !important;
+    background-color: #ffffff;
+    border: 1px solid #d1d1d1;
     padding: 18px;
     display: flex;
     justify-content: space-between;
@@ -226,34 +163,13 @@ body {
     border-radius: 10px;
     margin-top: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-    transition: all 0.2s ease;
 }
 
-/* hover effekt på item (funkad endast på dator) */
-@media (min-width: 769px) {
-    .item:hover {
-        border-color: #1ba1e2 !important;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-}
-
-/* text i item */
-.item span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #222;
-    line-height: 1.4;
-}
-
-/* container för knappar */
 .action-buttons {
     display: flex;
     gap: 8px;
-    flex-shrink: 0;
 }
 
-/* grundstil för knappar */
 .action-btn {
     padding: 8px 14px;
     border-radius: 6px;
@@ -262,22 +178,13 @@ body {
     cursor: pointer;
     border: none;
     color: white;
-    transition: opacity 0.2s, transform 0.1s;
+    text-decoration: none;
 }
 
-/* hover på alla knappar */
-.action-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
-}
+.edit-btn { background-color: #1ba1e2; }
+.delete-btn { background-color: #d93025; }
 
-/* specifika knappar */
-.edit-btn { background-color: #1ba1e2; }   /* redigera */
-.delete-btn { background-color: #d93025; } /* ta bort */
-
-
-/* spara och lägg till knappar */
-.save-btn, .add-btn, .add-btn-mobile {
+.save-btn {
     background-color: #60a917;
     color: white;
     border: none;
@@ -285,29 +192,57 @@ body {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s;
+    display: inline-block;
+    text-decoration: none;
 }
 
-
-/* hover på gröna knappar */
-.save-btn:hover, .add-btn:hover {
-    background-color: #4e8a12;
-}
-
-
-/* mobil "lägg till" knapp */
-.add-btn-mobile {
+/* 6. REDIGERA-VY (Den dolda sektionen) */
+.hidden-section {
+    display: none !important; /* Dold som standard */
+    clear: both;
     width: 100%;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    padding: 15px;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    background: white;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+/* Visas när man klickar på Ändra */
+.hidden-section:target {
+    display: block !important;
+}
 
-/* label till inputfält */
-.input-field label {
-    font-size: 12px;
+.edit-box-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+/* 7. KNAPPAR I REDIGERING (Marginal-fixen!) */
+.edit-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px; /* REJÄL MARGINAL så Spara inte ligger på texten */
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+
+.cancel-btn {
+    background-color: #888 !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
     font-weight: bold;
-    color: #666;
-    margin-bottom: 2px;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
 }
+
+.save-btn:hover { background-color: #4e8a12; }
+.cancel-btn:hover { background-color: #666 !important; }
