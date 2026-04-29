@@ -1,0 +1,17 @@
+{
+	"activities":
+	[
+		{
+			"id": 1,
+			"aktivitet": "Funkar!"
+		},
+		{
+			"id": 3,
+			"aktivitet": "gg"
+		},
+		{
+			"id": 2,
+			"aktivitet": "nej"
+		}
+	]
+}

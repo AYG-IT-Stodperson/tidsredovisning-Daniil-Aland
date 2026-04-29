@@ -1,0 +1,20 @@
+{
+	"tasks":
+	[
+		{
+			"activityId": 1,
+			"activity": "Funkar!",
+			"time":"00:45"
+		},
+		{
+			"activityId": 3,
+			"activity": "gg",
+			"time":"01:15"
+		},
+		{
+			"activityId": 2,
+			"activity": "nej",
+			"time":"05.30"
+		}
+	]
+}
