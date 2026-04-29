@@ -246,3 +246,26 @@ body {
 
 .save-btn:hover { background-color: #4e8a12; }
 .cancel-btn:hover { background-color: #666 !important; }
+
+.lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    list-style: none;   /* TAR BORT PUNKTER */
+    margin: 0;
+}
+
+.lista li {
+    list-style: none;   /* extra säkerhet */
+}
+
+.lista.heading {
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+}
+
+.right {
+    text-align: right;
+}
