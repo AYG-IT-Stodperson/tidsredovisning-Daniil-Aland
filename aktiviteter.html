@@ -4,77 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tidapp - Aktiviteter</title>
+
+
+
+    <!-- koppling till CSS filen för design -->
     <link rel="stylesheet" href="css/style.css">
+
+
 </head>
 <body>
 
+
+
+<!-- DESKTOP VY, denna visas bara på stora skärmar via CSS -->
 <div class="desktop-wrapper">
     <header class="header">Tidapp - Mina Aktiviteter</header>
+
+
+
     <div class="main-layout">
+        <!-- sidomeny för navigering -->
+
+
         <aside class="sidebar">
             <a href="index.html" class="nav-item">HEM</a>
             <a href="aktiviteter.html" class="nav-item active">AKTIVITETER</a>
             <a href="uppgifter.html" class="nav-item">UPPGIFTER</a>
             <a href="sammanstallning.html" class="nav-item">TOTALT</a>
         </aside>
+
+
+
         <main class="content">
             <h2>Hantera Aktiviteter</h2>
 
-            <button class="add-btn">+ Skapa ny aktivitet</button>
-
-            <div class="item-list">
-                <div class="item">
-                    <span>Cykla</span>
-                    <div class="action-buttons">
-                        <a href="#redigera-aktivitet-1" class="action-btn edit-btn" style="text-decoration:none;">Ändra</a>
-                        <button class="action-btn delete-btn">Ta bort</button>
-                    </div>
+            <!-- formulär för att lägga till ny aktivitet -->
+            <div class="log-form">
+                <div class="input-field" style="flex: 1;">
+                    <label>Namn på ny aktivitet</label>
+                    <input type="text" id="new-activity-name" placeholder="Ex: Simning, Promenad...">
                 </div>
-                <div class="item">
-                    <span>Läxor</span>
-                    <div class="action-buttons">
-                        <a href="#redigera-aktivitet-2" class="action-btn edit-btn" style="text-decoration:none;">Ändra</a>
-                        <button class="action-btn delete-btn">Ta bort</button>
-                    </div>
-                </div>
+                <button class="save-btn" id="add-activity-btn">Spara</button>
             </div>
 
-            <div id="redigera-aktivitet-1" class="hidden-section">
-                <h3>Redigera Aktivitet (Cykla)</h3>
+
+
+            <!-- behållare där JS funktionen fyllLista() lägger in alla aktiviteter -->
+            <div class="item-list"></div>
+
+
+
+            <!-- redigeringssektion -->
+            <div id="redigera-fomular" class="hidden-section">
+                <h3>Redigera Aktivitet</h3>
                 <div class="edit-box-content">
                     <div class="input-field">
                         <label>Namn på aktivitet</label>
-                        <input type="text" value="Cykla">
+                        <input type="text" id="edit-activity-name">
                     </div>
+
+
 
                     <div class="edit-buttons">
                         <a href="#" class="save-btn" style="text-decoration:none;">Spara</a>
-                        <a href="#" class="action-btn cancel-btn" style="text-decoration:none;">Avbryt</a>
+                        <a href="#" class="btn-outline cancel-btn" style="text-decoration:none; margin-left: 10px;">Avbryt</a>
                     </div>
                 </div>
             </div>
-
-            <div id="redigera-aktivitet-2" class="hidden-section">
-                <h3>Redigera Aktivitet (Läxor)</h3>
-                <div class="edit-box-content">
-                    <div class="input-field">
-                        <label>Namn på aktivitet</label>
-                        <input type="text" value="Läxor">
-                    </div>
-
-                    <div class="edit-buttons">
-                        <a href="#" class="save-btn" style="text-decoration:none;">Spara</a>
-                        <a href="#" class="action-btn cancel-btn" style="text-decoration:none;">Avbryt</a>
-                    </div>
-                </div>
-            </div>
-
         </main>
     </div>
 </div>
 
+
+
+<!-- MOBIL VY, Denna visas bara på små skärmar via CSS -->
 <div class="mobile-wrapper">
+    <header class="header">Tidapp - Aktiviteter</header>
+
+
+
+    <div class="mobile-content">
+        <!-- enkel rad för att snabbt lägga till aktivitet på mobilen -->
+        <div class="log-form" style="margin-bottom: 15px; display: flex;">
+            <input type="text" id="mobile-activity-name" placeholder="Ny aktivitet..." style="flex: 1; border: 1px solid #ccc; border-radius: 4px; padding: 5px;">
+            <button class="save-btn" onclick="skapaNyAktivitet(true)" style="padding: 5px 10px; margin-left: 5px;">+</button>
+        </div>
+
+
+
+        <!-- behållare för mobil listan -->
+        <div class="item-list-mobil"></div>
+    </div>
+
+
+
+    <!-- fast meny i botten för mobilanvändare -->
+    <footer class="mobile-footer">
+        <a href="index.html" class="nav-item">Hem</a>
+        <a href="aktiviteter.html" class="nav-item active">Aktiviteter</a>
+        <a href="uppgifter.html" class="nav-item">Uppgifter</a>
+        <a href="sammanstallning.html" class="nav-item">Totalt</a>
+    </footer>
 </div>
+
+
+
+<!-- koppling till javaScript filen som styr logiken -->
+<script src="js/aktiviteter.js"></script>
 
 </body>
 </html>

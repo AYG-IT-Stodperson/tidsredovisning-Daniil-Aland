@@ -8,21 +8,39 @@
 </head>
 <body>
 
+<!-- DESKTOP VY -->
 <div class="desktop-wrapper">
     <header class="header">Tidapp - Lägg till Uppgift</header>
+
+
+
     <div class="main-layout">
+        <!-- navigeringsmeny för desktop -->
         <aside class="sidebar">
             <a href="index.html" class="nav-item">HEM</a>
             <a href="aktiviteter.html" class="nav-item">AKTIVITETER</a>
             <a href="uppgifter.html" class="nav-item active">UPPGIFTER</a>
             <a href="sammanstallning.html" class="nav-item">TOTALT</a>
         </aside>
+
+
+
+
         <main class="content">
             <h2>Logga ny uppgift</h2>
+
+
+
+            <!-- inmatningsformulär för desktop -->
             <div class="log-form">
                 <div class="input-field">
                     <label>Aktivitet</label>
-                    <select><option>Cykla</option><option>Läxor</option></select>
+                    <select>
+                        <option>Cykla</option>
+                        <option>Läxor</option>
+                        <option>Gymma</option>
+                        <option>Programmera</option>
+                    </select>
                 </div>
                 <div class="input-field">
                     <label>Datum</label>
@@ -39,47 +57,37 @@
                 <button class="save-btn">Spara</button>
             </div>
 
-            <div class="item-list">
-                <div class="item">
-                    <span>2026-04-22: Träningspass — Cykla (1 timme)</span>
-                    <div class="action-buttons">
-                        <a href="#redigera-fomular" class="action-btn edit-btn" style="text-decoration:none;">Ändra</a>
-                        <button class="action-btn delete-btn">Ta bort</button>
-                    </div>
-                </div>
+            <div class="item-list"></div>
 
-                <div class="item">
-                    <span>2026-04-23: Läxläsning — Matte (2 timmar)</span>
-                    <div class="action-buttons">
-                        <a href="#redigera-fomular" class="action-btn edit-btn" style="text-decoration:none;">Ändra</a>
-                        <button class="action-btn delete-btn">Ta bort</button>
-                    </div>
-                </div>
-            </div>
-
+            <!-- dolt redigeringsformulär som visas via JS när man klickar på "Redigera" -->
             <div id="redigera-fomular" class="hidden-section">
                 <h3>Redigera Uppgift</h3>
                 <div class="edit-box-content">
                     <div class="input-field">
                         <label>Aktivitet</label>
-                        <select><option selected>Cykla</option><option>Läxor</option></select>
+                        <select>
+                            <option>Cykla</option>
+                            <option>Läxor</option>
+                            <option>Gymma</option>
+                            <option>Programmera</option>
+                        </select>
                     </div>
                     <div class="input-field">
                         <label>Datum</label>
-                        <input type="date" value="2026-04-22">
+                        <input type="date">
                     </div>
                     <div class="input-field">
-                        <label>Tid (timmar)</label>
-                        <input type="number" value="1" step="0.5">
+                        <label>Tid</label>
+                        <input type="text" placeholder="00:00">
                     </div>
                     <div class="input-field">
                         <label>Beskrivning</label>
-                        <input type="text" value="Träningspass">
+                        <input type="text">
                     </div>
 
                     <div class="edit-buttons">
-                        <a href="#" class="save-btn" style="text-decoration:none; margin-right: 10px;">Spara</a>
-                        <a href="#" class="action-btn cancel-btn" style="text-decoration:none;">Avbryt</a>
+                        <a href="#" class="save-btn" style="text-decoration:none;">Spara</a>
+                        <a href="#" class="btn-outline cancel-btn" style="text-decoration:none; margin-left: 10px;">Avbryt</a>
                     </div>
                 </div>
             </div>
@@ -88,8 +96,68 @@
     </div>
 </div>
 
+<!-- MOBIL-VY -->
 <div class="mobile-wrapper">
+    <header class="mobile-header">
+        Tidapp - Uppgifter
+
+
+        <!-- plus-knapp för att fälla ut inmatningsformuläret -->
+        <button class="add-mobile-btn" onclick="toggleMobilForm()">+</button>
+    </header>
+
+
+    <div class="mobile-content">
+        <!-- dolt formulär för mobil -->
+
+        <div id="mobile-log-form" class="log-form-mobile" style="display: none;">
+            <div class="input-field">
+                <label>Aktivitet</label>
+                <select id="mobile-task-activity">
+                    <option>Cykla</option>
+                    <option>Läxor</option>
+                    <option>Gymma</option>
+                    <option>Programmera</option>
+                </select>
+            </div>
+
+            <div class="input-field">
+                <label>Datum</label>
+                <input type="date" id="mobile-task-date">
+            </div>
+
+            <div class="input-field">
+                <label>Tid</label>
+                <input type="number" id="mobile-task-time" placeholder="0">
+            </div>
+
+            <div class="input-field">
+                <label>Beskrivning</label>
+                <input type="text" id="mobile-task-desc" placeholder="Vad gjorde du?">
+            </div>
+
+            <button class="save-btn" onclick="sparaNyUppgift(true)">Spara uppgift</button>
+
+        </div>
+
+        <!-- behållare för mobil listan -->
+        <div class="item-list-mobil"></div>
+    </div>
+
+
+
+    <!-- fast navigering i botten för mobil -->
+    <footer class="mobile-footer">
+        <a href="index.html" class="nav-item">Hem</a>
+        <a href="aktiviteter.html" class="nav-item">Aktiviteter</a>
+        <a href="uppgifter.html" class="nav-item active">Uppgifter</a>
+        <a href="sammanstallning.html" class="nav-item">Totalt</a>
+    </footer>
+
 </div>
+
+
+<script src="js/uppgifter.js"></script>
 
 </body>
 </html>
