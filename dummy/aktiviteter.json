@@ -3,15 +3,19 @@
 	[
 		{
 			"id": 1,
-			"aktivitet": "Funkar!"
-		},
-		{
-			"id": 3,
-			"aktivitet": "gg"
+			"aktivitet": "Judo"
 		},
 		{
 			"id": 2,
-			"aktivitet": "nej"
-		}
+			"aktivitet": "Skola"
+		},
+		{
+			"id": 3,
+			"aktivitet": "Jobb"
+		},
+        {
+            "id": 4,
+            "aktivitet": "Gym"
+        }
 	]
 }

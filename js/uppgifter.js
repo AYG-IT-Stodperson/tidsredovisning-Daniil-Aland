@@ -16,15 +16,35 @@ function rensaLista() {
 
 // simulerar hämtning av data (en fast lista med uppgifter)
 function getTasks() {
-    let retur = {
-        tasks: [
-            { id: 1, datum: "2026-04-28", tid: "00:45", aktivitet: "API - Aktiviteter", beskrivning: "Hämta alla aktiviteter" },
-            { id: 2, datum: "2026-04-28", tid: "00:20", aktivitet: "API - Aktiviteter", beskrivning: "Hämta enskild aktivitet" },
-            { id: 3, datum: "2026-04-24", tid: "03:00", aktivitet: "Gränssnitt - Sammanställning", beskrivning: "Skapa vy för sammanställning" }
-        ]
-    };
-    fyllLista(retur); // Skickar datan till rit-funktionen
-}
+    fetch("dummy/uppgifter.json")
+        .then(response =>{
+            if(response.ok) {
+                return response.json()
+            }
+
+
+            // response är inte ok..
+            return response.json()
+                .catch(() =>null) // Är svaret inte json händer inget
+                .then(message =>{
+                    let fel={status:response.status,
+                    text: response.statusText,
+                    url: response.url,
+                    message
+                    }
+
+                    throw fel
+                })
+        })
+        .then(data =>{
+            fyllLista(data)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
+
+
 
 // huvudfunktion för att bygga upp listan i HTML
 function fyllLista(data) {
@@ -76,10 +96,10 @@ function fyllLista(data) {
                 let rad = document.createElement("ul");
                 rad.className = "lista";
                 rad.innerHTML = `
-                    <li style="width: 15%;">${task.datum}</li>
-                    <li style="width: 10%;">${task.tid}</li>
-                    <li style="width: 25%;">${task.aktivitet}</li>
-                    <li style="width: 30%;">${task.beskrivning}</li>
+                    <li style="width: 15%;">${task.date}</li>
+                    <li style="width: 10%;">${task.time}</li>
+                    <li style="width: 25%;">${task.activity}</li>
+                    <li style="width: 30%;">${task.description}</li>
                     <li class="right" style="width: 20%;">
                         <div class="action-buttons">
                             <a href="#redigera-fomular" class="btn-outline" onclick='fyllRedigeraFormular(${JSON.stringify(task)})'>Redigera</a>
@@ -101,10 +121,10 @@ function fyllRedigeraFormular(task) {
 
 
     // placerar data i respektive input-fält baserat på ordning
-    inputs[0].value = task.aktivitet;
-    inputs[1].value = task.datum;
-    inputs[2].value = task.tid;
-    inputs[3].value = task.beskrivning;
+    inputs[0].value = task.activity;
+    inputs[1].value = task.date;
+    inputs[2].value = task.time;
+    inputs[3].value = task.description;
 }
 
 

@@ -3,18 +3,33 @@ window.onload = () => {
     getActivities();
 };
 
+
 // hämtar data just nu är det en hårdkodad lista, och sedan skickar vidare den
-function getActivities() {
-    let retur = {
-        activities: [
-            { id: 1, namn: "Cykla" },
-            { id: 2, namn: "Läxor" },
-            { id: 3, namn: "Gymma" },
-            { id: 4, namn: "Programmera" }
-        ]
-    };
-    fyllLista(retur);
+async function getActivities() {
+    try {
+        let response = await fetch("dummy/aktiviteter.json")
+        if (response.ok) {
+            let data = await response.json()
+            fyllLista(data)
+    }   else {
+        let message = null
+        try{
+            message=await response.json()
+        }   finally {
+            let fel ={status:response.status,
+            text: response.statusText,
+            url: response.url,
+            message
+            }
+        throw fel
+
+        }
+    }
+}   catch (error) {
+    console.error(error)
+    }
 }
+
 
 // skapar HTML element för varje aktivitet och placerar dem på sidan
 function fyllLista(data) {
@@ -39,7 +54,7 @@ function fyllLista(data) {
 
             // skapar innehållet för aktiviteten med namn och knappar
             itemDiv.innerHTML = `
-                <span class="activity-name">${act.namn}</span>
+                <span class="activity-name">${act.aktivitet}</span>
                 <div class="action-buttons">
                     <a href="#redigera-fomular" class="btn-outline" style="text-decoration:none;" 
                        onclick='visaRedigera(${JSON.stringify(act)})'>Redigera</a>
@@ -59,7 +74,7 @@ function visaRedigera(act) {
     const input = document.getElementById("edit-activity-name");
 
     if (editSection && input) {
-        input.value = act.namn; // Sätter aktivitetens namn i textfältet
+        input.value = act.aktivitet; // Sätter aktivitetens namn i textfältet
         editSection.style.display = "block"; // Visar sektionen
         editSection.scrollIntoView({ behavior: 'smooth' }); // Scrollar mjukt till formuläret
     }
