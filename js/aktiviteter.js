@@ -81,10 +81,11 @@ function visaRedigera(act) {
 }
 
 
-
-// döljer redigeringsformuläret
+stangRedigera(e)
 function stangRedigera(e) {
-    if (e) e.preventDefault(); // Hindrar sidan från att laddas om
+    if (e) {
+        e.preventDefault(); // Detta stoppar sidan från att hoppa upp!
+    }
     const editSection = document.getElementById("redigera-fomular");
     if (editSection) {
         editSection.style.display = "none";

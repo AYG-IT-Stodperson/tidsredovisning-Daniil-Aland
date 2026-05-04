@@ -7,6 +7,36 @@ window.onload = () => {
 
     // Hämta från API:et
     getCompilation();
+
+}
+
+function getCompilation() {
+    fetch("dummy/sammanstallning.json")
+        .then(response =>{
+            if(response.ok) {
+                return response.json()
+            }
+
+
+            // response är inte ok..
+            return response.json()
+                .catch(() =>null) // Är svaret inte json händer inget
+                .then(message =>{
+                    let fel={status:response.status,
+                        text: response.statusText,
+                        url: response.url,
+                        message
+                    }
+
+                    throw fel
+                })
+        })
+        .then(data =>{
+            fyllLista(data)
+        })
+        .catch(error => {
+            console.error(error)
+        })
 }
 
 function rensaLista() {
@@ -39,20 +69,9 @@ function setDateInterval() {
     document.getElementById("tillDatum-mobil").value = toStr;
 }
 
-function getCompilation() {
-    // Simulerat API-svar
 
 
-    let retur = {
-        tasks: [
-            { id: 1, time: "03:00", name: "Databas" },
-            { id: 3, time: "02:15", name: "API-anrop" },
-            { id: 4, time: "03:30", name: "Javascript" },
-            { id: 5, time: "01:00", name: "Styling" },
-        ]
-    }
-    fyllLista(retur);
-}
+
 
 
 function fyllLista(data) {
@@ -71,7 +90,7 @@ function fyllLista(data) {
         for (let i = 0; i < data.tasks.length; i++) {
             let rad = document.createElement("ul");
             rad.className = "lista";
-            rad.innerHTML = `<li>${data.tasks[i].name}</li><li class="right">${data.tasks[i].time}</li>`;
+            rad.innerHTML = `<li>${data.tasks[i].activity}</li><li class="right">${data.tasks[i].time}</li>`;
             target.appendChild(rad);
         }
     });
