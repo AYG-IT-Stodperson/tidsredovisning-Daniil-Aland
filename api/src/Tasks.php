@@ -57,7 +57,43 @@ function tasks(Route $route, array $postData): Response {
  * @return Response
  */
 function hamtaSida(string $sida): Response {
-    
+    // Kontrollera indata
+    $sidnummer=filter_var($sida, FILTER_VALIDATE_INT);
+
+    if($sidnummer === false){
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Ogiltigt sidnummer"];
+
+        return new Response($retur, 400);
+    } elseif ($sidnummer<1) {
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Sidnummer ska vara större än noll"];
+
+        return new Response($retur, 400);
+    }
+    // Hämta antal poster per sida
+    $settings=new Settings();
+    $posterPerSida=$settings->recordsPerPage;
+
+
+    // Koppla databas
+$db=connectDb();
+
+    // Skicka fråga om antal poster
+    $result=$db->query("SELECT COUNT(*) FROM uppgifter");
+    $antalRader=$result->fetchColumn();
+    $antalSidor= ceil($antalRader/$posterPerSida);
+
+    // Kontrollera begärd sida
+    If($sidnummer>$antalSidor){
+        $retur = new stdClass();
+        $retur->error=["Bad request", "Det finns bara $antalSidor"];
+
+        return new Response($retur, 400);
+    }
+    // Skicka fråga för aktuell sida
+
+    // Returnera svar
 }
 
 /**

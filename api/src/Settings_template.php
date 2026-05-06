@@ -10,4 +10,5 @@ class Settings {
     public string  $dsn = "";
     public string  $dbUser = "";
     public string  $dbPassword = "";
+    public int $recordsPerPage=5;
 }

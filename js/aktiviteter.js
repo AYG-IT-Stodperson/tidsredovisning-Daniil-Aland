@@ -1,93 +1,141 @@
-// körs automatiskt när webbsidan har laddats klart
-window.onload = () => {
-    getActivities();
-};
+// ─── HJÄLPFUNKTIONER ──────────────────────────────────────────
+
+function hamtaAktiviteter() {
+    return JSON.parse(localStorage.getItem("aktiviteter") || "[]");
+}
+
+function sparaAktiviteter(lista) {
+    localStorage.setItem("aktiviteter", JSON.stringify(lista));
+}
+
+function hamtaIdFranURL() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    return id !== null ? parseInt(id) : null;
+}
 
 
-// hämtar data just nu är det en hårdkodad lista, och sedan skickar vidare den
-async function getActivities() {
+
+async function laddaFranJSONomTomt() {
+    if (hamtaAktiviteter().length > 0) return; // redan data, skippa
+
     try {
-        let response = await fetch("dummy/aktiviteter.json")
-        if (response.ok) {
-            let data = await response.json()
-            fyllLista(data)
-    }   else {
-        let message = null
-        try{
-            message=await response.json()
-        }   finally {
-            let fel ={status:response.status,
-            text: response.statusText,
-            url: response.url,
-            message
-            }
-        throw fel
+        const response = await fetch("dummy/aktiviteter.json");
+        if (!response.ok) return;
+        const data = await response.json();
 
-        }
-    }
-}   catch (error) {
-    console.error(error)
+        const lista = data.activities.map(a => ({
+            id: a.id,
+            namn: a.aktivitet
+        }));
+
+        sparaAktiviteter(lista);
+    } catch (e) {
+        console.error("Kunde inte ladda JSON:", e);
     }
 }
 
 
-// skapar HTML element för varje aktivitet och placerar dem på sidan
-function fyllLista(data) {
 
-
-
-    // hittar alla listor (både för desktop och mobil)
-    let targets = document.querySelectorAll(".item-list, .item-list-mobil");
-
-
+function fyllLista() {
+    const aktiviteter = hamtaAktiviteter();
+    const targets = document.querySelectorAll(".item-list, .item-list-mobil");
+    if (targets.length === 0) return;
 
     targets.forEach(target => {
-        target.innerHTML = ""; // rensar listan innan den fylls på nytt
+        target.innerHTML = "";
 
-
-        // loopar igenom varje aktivitet i datan
-        data.activities.forEach(act => {
-            let itemDiv = document.createElement("div");
-            itemDiv.className = "item activity-card";
-
-
-
-            // skapar innehållet för aktiviteten med namn och knappar
-            itemDiv.innerHTML = `
-                <span class="activity-name">${act.aktivitet}</span>
+        aktiviteter.forEach(a => {
+            const div = document.createElement("div");
+            div.className = "item activity-card";
+            div.innerHTML = `
+                <span class="activity-name">${a.namn}</span>
                 <div class="action-buttons">
-                    <a href="#redigera-fomular" class="btn-outline" style="text-decoration:none;" 
-                       onclick='visaRedigera(${JSON.stringify(act)})'>Redigera</a>
-                    <button class="btn-outline btn-delete">Radera</button>
+                    <button class="btn-outline" onclick="redigeraAktivitet(${a.id})">Redigera</button>
+                    <button class="btn-outline btn-delete" onclick="raderaAktivitet(${a.id})">Radera</button>
                 </div>
             `;
-
-            // lägger till den färdiga diven i listan
-            target.appendChild(itemDiv);
+            target.appendChild(div);
         });
     });
 }
 
-// visar formuläret för att redigera en specifik aktivitet
-function visaRedigera(act) {
-    const editSection = document.getElementById("redigera-fomular");
-    const input = document.getElementById("edit-activity-name");
+function redigeraAktivitet(id) {
+    window.location.href = `editAktivitet.html?id=${id}`;
+}
 
-    if (editSection && input) {
-        input.value = act.aktivitet; // Sätter aktivitetens namn i textfältet
-        editSection.style.display = "block"; // Visar sektionen
-        editSection.scrollIntoView({ behavior: 'smooth' }); // Scrollar mjukt till formuläret
-    }
+function raderaAktivitet(id) {
+    if (!confirm("Radera aktiviteten?")) return;
+    const lista = hamtaAktiviteter().filter(a => a.id !== id);
+    sparaAktiviteter(lista);
+    fyllLista();
 }
 
 
-stangRedigera(e)
-function stangRedigera(e) {
-    if (e) {
-        e.preventDefault(); // Detta stoppar sidan från att hoppa upp!
-    }
-    const editSection = document.getElementById("redigera-fomular");
-    if (editSection) {
-        editSection.style.display = "none";
-    }
+
+function fyllFormularMedAktivitet(id) {
+    const a = hamtaAktiviteter().find(a => a.id === id);
+    if (!a) return;
+
+    const desk = document.getElementById("aktivitet-namn");
+    const mob  = document.getElementById("mob-aktivitet-namn");
+    const titD = document.getElementById("form-titel");
+    const titM = document.getElementById("mob-form-titel");
+
+    if (desk) desk.value       = a.namn;
+    if (mob)  mob.value        = a.namn;
+    if (titD) titD.textContent = "Redigera aktivitet";
+    if (titM) titM.textContent = "Redigera aktivitet";
 }
+
+function sparaFormular() {
+    const id = hamtaIdFranURL();
+
+    const namn = (
+        document.getElementById("aktivitet-namn") ||
+        document.getElementById("mob-aktivitet-namn")
+    )?.value?.trim();
+
+    if (!namn) {
+        alert("Ange ett namn på aktiviteten.");
+        return;
+    }
+
+    const lista = hamtaAktiviteter();
+
+    if (id === null) {
+
+        const nyttId = lista.length > 0 ? Math.max(...lista.map(a => a.id)) + 1 : 1;
+        lista.push({ id: nyttId, namn });
+    } else {
+
+        const index = lista.findIndex(a => a.id === id);
+        if (index !== -1) lista[index].namn = namn;
+    }
+
+    sparaAktiviteter(lista);
+    window.location.href = "aktiviteter.html";
+}
+
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const paListSidan = document.querySelector(".item-list, .item-list-mobil");
+    const paEditSidan = document.getElementById("spara-btn") ||
+        document.getElementById("mob-spara-btn");
+
+    if (paListSidan) {
+        await laddaFranJSONomTomt(); // hämtar JSON bara om localStorage är tomt
+        fyllLista();
+    }
+
+    if (paEditSidan) {
+        const id = hamtaIdFranURL();
+        if (id !== null) {
+            fyllFormularMedAktivitet(id);
+        }
+
+        document.getElementById("spara-btn")?.addEventListener("click", sparaFormular);
+        document.getElementById("mob-spara-btn")?.addEventListener("click", sparaFormular);
+    }
+});

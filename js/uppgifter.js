@@ -1,109 +1,107 @@
-// örs när sidan laddas
-window.onload = () => {
-    rensaLista(); // tömmer gamla element
-    getTasks();   // hämtar och visar uppgifter
+// ─── HJÄLPFUNKTIONER ──────────────────────────────────────────
+
+function hamtaUppgifter() {
+    return JSON.parse(localStorage.getItem("uppgifter") || "[]");
 }
 
-// tömmer innehållet i både desktop och mobil listorna
-function rensaLista() {
-    let listor = document.querySelectorAll(".item-list, .item-list-mobil");
-    listor.forEach(lista => {
-        lista.innerHTML = "";
-    });
+function sparaUppgifter(lista) {
+    localStorage.setItem("uppgifter", JSON.stringify(lista));
+}
+
+function hamtaAktiviteter() {
+    return JSON.parse(localStorage.getItem("aktiviteter") || "[]");
+}
+
+function hamtaIdFranURL() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    return id !== null ? parseInt(id) : null;
 }
 
 
 
-// simulerar hämtning av data (en fast lista med uppgifter)
-function getTasks() {
-    fetch("dummy/uppgifter.json")
-        .then(response =>{
-            if(response.ok) {
-                return response.json()
-            }
+async function laddaFranJSONomTomt() {
+    if (hamtaUppgifter().length > 0) return;
 
+    try {
+        const response = await fetch("dummy/uppgifter.json");
+        if (!response.ok) return;
+        const data = await response.json();
 
-            // response är inte ok..
-            return response.json()
-                .catch(() =>null) // Är svaret inte json händer inget
-                .then(message =>{
-                    let fel={status:response.status,
-                    text: response.statusText,
-                    url: response.url,
-                    message
-                    }
+        const lista = data.tasks.map(t => ({
+            id: t.id,
+            aktivitetId: t.aktivitetId ?? null,
+            aktivitet: t.aktivitet ?? t.activity ?? "",
+            datum: t.datum ?? t.date ?? "",
+            tid: t.tid ?? t.time ?? "",
+            beskrivning: t.beskrivning ?? t.description ?? ""
+        }));
 
-                    throw fel
-                })
-        })
-        .then(data =>{
-            fyllLista(data)
-        })
-        .catch(error => {
-            console.error(error)
-        })
+        sparaUppgifter(lista);
+    } catch (e) {
+        console.error("Kunde inte ladda uppgifter.json:", e);
     }
+}
 
 
 
-// huvudfunktion för att bygga upp listan i HTML
-function fyllLista(data) {
-    let targets = document.querySelectorAll(".item-list, .item-list-mobil");
+function fyllLista() {
+    const uppgifter   = hamtaUppgifter();
+    const aktiviteter = hamtaAktiviteter();
+
+    const targets = document.querySelectorAll(".item-list, .item-list-mobil");
+    if (targets.length === 0) return;
 
     targets.forEach(target => {
         target.innerHTML = "";
-        // Kontrollera om den aktuella behållaren är för mobiler
         const isMobile = target.classList.contains("item-list-mobil");
 
-        // skapar rubriker, men bara för dator vyn
+        // Rubrikrad bara på desktop
         if (!isMobile) {
-            let rubrikRad = document.createElement("ul");
-            rubrikRad.className = "lista heading";
-            rubrikRad.innerHTML = `
-                <li style="width: 15%;">Datum</li>
-                <li style="width: 10%;">Tid</li>
-                <li style="width: 25%;">Aktivitet</li>
-                <li style="width: 30%;">Beskrivning</li>
-                <li style="width: 20%;"></li> 
+            const rubrik = document.createElement("ul");
+            rubrik.className = "lista heading";
+            rubrik.innerHTML = `
+                <li style="width:15%;">DATUM</li>
+                <li style="width:10%;">TID</li>
+                <li style="width:25%;">AKTIVITET</li>
+                <li style="width:30%;">BESKRIVNING</li>
+                <li style="width:20%;"></li>
             `;
-            target.appendChild(rubrikRad);
+            target.appendChild(rubrik);
         }
 
-        // går igenom varje uppgift och skapa rätt sorts HTML element
+        uppgifter.forEach(u => {
+            const aktNamn = aktiviteter.find(a => a.id === u.aktivitetId)?.namn
+                || u.aktivitet
+                || "–";
 
-
-        data.tasks.forEach(task => {
             if (isMobile) {
-                // MOBIL LAYOUT: Bygger upp ett "kort" med staplad info
-                let card = document.createElement("div");
+                const card = document.createElement("div");
                 card.className = "task-card-mobile";
                 card.innerHTML = `
                     <div class="task-info">
-                        <div class="task-row"><strong>${task.datum}</strong> <span>${task.tid}</span></div>
-                        <div class="task-main"><strong>${task.aktivitet}</strong></div>
-                        <div class="task-desc">${task.beskrivning}</div>
+                        <div class="task-row"><strong>${u.datum}</strong> <span>${u.tid}</span></div>
+                        <div class="task-main"><strong>${aktNamn}</strong></div>
+                        <div class="task-desc">${u.beskrivning}</div>
                     </div>
                     <div class="action-buttons">
-                        <a href="#redigera-fomular" onclick='fyllRedigeraFormular(${JSON.stringify(task)})'>Redigera</a>
-                        <button class="btn-outline btn-delete" style="margin-left:10px;">Radera</button>
+                        <button class="btn-outline" onclick="redigeraUppgift(${u.id})">Redigera</button>
+                        <button class="btn-outline btn-delete" onclick="raderaUppgift(${u.id})">Radera</button>
                     </div>
                 `;
                 target.appendChild(card);
             } else {
-
-
-                // DESKTOP LAYOUT: Bygger upp en rad i en tabell/lista
-                let rad = document.createElement("ul");
+                const rad = document.createElement("ul");
                 rad.className = "lista";
                 rad.innerHTML = `
-                    <li style="width: 15%;">${task.date}</li>
-                    <li style="width: 10%;">${task.time}</li>
-                    <li style="width: 25%;">${task.activity}</li>
-                    <li style="width: 30%;">${task.description}</li>
-                    <li class="right" style="width: 20%;">
+                    <li style="width:15%;">${u.datum}</li>
+                    <li style="width:10%;">${u.tid}</li>
+                    <li style="width:25%;">${aktNamn}</li>
+                    <li style="width:30%;">${u.beskrivning}</li>
+                    <li class="right" style="width:20%;">
                         <div class="action-buttons">
-                            <a href="#redigera-fomular" class="btn-outline" onclick='fyllRedigeraFormular(${JSON.stringify(task)})'>Redigera</a>
-                            <button class="btn-outline btn-delete">Radera</button>
+                            <button class="btn-outline" onclick="redigeraUppgift(${u.id})">Redigera</button>
+                            <button class="btn-outline btn-delete" onclick="raderaUppgift(${u.id})">Radera</button>
                         </div>
                     </li>
                 `;
@@ -113,45 +111,112 @@ function fyllLista(data) {
     });
 }
 
-// fyller i formuläret med värden från den uppgift man klickat på
-function fyllRedigeraFormular(task) {
-    const editSection = document.getElementById("redigera-fomular");
-    const inputs = editSection.querySelectorAll("input, select");
-
-
-
-    // placerar data i respektive input-fält baserat på ordning
-    inputs[0].value = task.activity;
-    inputs[1].value = task.date;
-    inputs[2].value = task.time;
-    inputs[3].value = task.description;
+function redigeraUppgift(id) {
+    window.location.href = `editUppgift.html?id=${id}`;
 }
 
-
-// visar/döljer formuläret på mobila enheter
-function toggleMobilForm() {
-    const form = document.getElementById("mobile-log-form");
-    form.style.display = (form.style.display === "none") ? "block" : "none";
+function raderaUppgift(id) {
+    if (!confirm("Radera uppgiften?")) return;
+    const lista = hamtaUppgifter().filter(u => u.id !== id);
+    sparaUppgifter(lista);
+    fyllLista();
 }
 
 
 
-// samlar in data från formulären och loggar i konsolen
-function sparaNyUppgift(isMobile) {
+function fyllAktivitetsval() {
+    const aktiviteter = hamtaAktiviteter();
+    const options = aktiviteter.map(a =>
+        `<option value="${a.id}">${a.namn}</option>`
+    ).join("");
 
-
-
-
-    // väljer rätt ID namn beroende på om vi sparar från mobil eller desktop
-    const data = {
-        aktivitet: document.getElementById(isMobile ? "mobile-task-activity" : "desktop-select-id").value,
-        datum: document.getElementById(isMobile ? "mobile-task-date" : "desktop-date-id").value,
-    };
-
-    console.log("Sparar uppgift:", data);
-
-
-
-    // stänger mobilmenyn om det var därifrån vi sparade
-    if(isMobile) toggleMobilForm();
+    const desk = document.getElementById("uppgift-aktivitet");
+    const mob  = document.getElementById("mob-uppgift-aktivitet");
+    if (desk) desk.innerHTML = options;
+    if (mob)  mob.innerHTML  = options;
 }
+
+function fyllFormularMedUppgift(id) {
+    const u = hamtaUppgifter().find(u => u.id === id);
+    if (!u) return;
+
+    const get = (deskId, mobId) =>
+        document.getElementById(deskId) || document.getElementById(mobId);
+
+    const titD = document.getElementById("form-titel");
+    const titM = document.getElementById("mob-form-titel");
+    if (titD) titD.textContent = "Redigera uppgift";
+    if (titM) titM.textContent = "Redigera uppgift";
+
+    const akt  = get("uppgift-aktivitet",   "mob-uppgift-aktivitet");
+    const dat  = get("uppgift-datum",        "mob-uppgift-datum");
+    const tid  = get("uppgift-tid",          "mob-uppgift-tid");
+    const besk = get("uppgift-beskrivning",  "mob-uppgift-beskrivning");
+
+    if (akt)  akt.value  = u.aktivitetId;
+    if (dat)  dat.value  = u.datum;
+    if (tid)  tid.value  = u.tid;
+    if (besk) besk.value = u.beskrivning;
+}
+
+function sparaFormular() {
+    const id = hamtaIdFranURL();
+
+    const get = (deskId, mobId) =>
+        (document.getElementById(deskId) || document.getElementById(mobId))?.value?.trim();
+
+    const aktivitetId = parseInt(
+        (document.getElementById("uppgift-aktivitet") ||
+            document.getElementById("mob-uppgift-aktivitet"))?.value
+    );
+    const datum       = get("uppgift-datum",       "mob-uppgift-datum");
+    const tid         = get("uppgift-tid",          "mob-uppgift-tid");
+    const beskrivning = get("uppgift-beskrivning",  "mob-uppgift-beskrivning");
+
+    if (!datum || !tid) {
+        alert("Fyll i datum och tid.");
+        return;
+    }
+
+    const lista = hamtaUppgifter();
+
+    if (id === null) {
+
+        const nyttId = lista.length > 0 ? Math.max(...lista.map(u => u.id)) + 1 : 1;
+        lista.push({ id: nyttId, aktivitetId, datum, tid, beskrivning });
+    } else {
+
+        const index = lista.findIndex(u => u.id === id);
+        if (index !== -1) {
+            lista[index] = { ...lista[index], aktivitetId, datum, tid, beskrivning };
+        }
+    }
+
+    sparaUppgifter(lista);
+    window.location.href = "uppgifter.html";
+}
+
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const paListSidan = document.querySelector(".item-list, .item-list-mobil");
+    const paEditSidan = document.getElementById("spara-btn") ||
+        document.getElementById("mob-spara-btn");
+
+    if (paListSidan) {
+        await laddaFranJSONomTomt();
+        fyllLista();
+    }
+
+    if (paEditSidan) {
+        fyllAktivitetsval();
+
+        const id = hamtaIdFranURL();
+        if (id !== null) {
+            fyllFormularMedUppgift(id);
+        }
+
+        document.getElementById("spara-btn")?.addEventListener("click", sparaFormular);
+        document.getElementById("mob-spara-btn")?.addEventListener("click", sparaFormular);
+    }
+});
