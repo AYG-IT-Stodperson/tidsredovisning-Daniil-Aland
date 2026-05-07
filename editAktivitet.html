@@ -8,9 +8,10 @@
 </head>
 <body>
 
-<!-- DESKTOP VY -->
+
 <div class="desktop-wrapper">
     <header class="header">Tidapp - Mina Aktiviteter</header>
+
 
     <div class="main-layout">
         <aside class="sidebar">
@@ -23,16 +24,24 @@
         <main class="content">
             <h2 id="form-titel">Ny aktivitet</h2>
 
+
             <div class="log-form">
-                <div class="input-field" style="flex: 1;">
+                <div class="input-field edit-id-field">
+                    <span id="visa-id" class="id-text"></span>
+
+
+
                     <label>Namn på aktivitet</label>
                     <input type="text" id="aktivitet-namn" placeholder="Ex: Simning, Promenad...">
+
+
                 </div>
+
                 <div class="edit-buttons">
                     <button class="save-btn" id="spara-btn">Spara</button>
-                    <a href="aktiviteter.html" class="btn-outline cancel-btn"
-                       style="text-decoration:none; margin-left:10px;">Avbryt</a>
+                    <a href="aktiviteter.html" class="cancel-btn">Avbryt</a>
                 </div>
+
             </div>
         </main>
     </div>
@@ -40,38 +49,7 @@
 
 
 
-<!-- MOBIL VY -->
-<div class="mobile-wrapper">
-    <header class="mobile-header">Tidapp - Aktiviteter</header>
-
-    <div class="mobile-content">
-        <h3 id="mob-form-titel" style="padding: 10px;">Ny aktivitet</h3>
-        <div class="log-form-mobile">
-            <div class="input-field">
-                <label>Namn på aktivitet</label>
-                <input type="text" id="mob-aktivitet-namn" placeholder="Ex: Simning, Promenad...">
-            </div>
-            <div class="edit-buttons">
-                <button class="save-btn" id="mob-spara-btn">Spara</button>
-                <a href="aktiviteter.html" class="btn-outline cancel-btn"
-                   style="text-decoration:none; margin-left:10px;">Avbryt</a>
-            </div>
-        </div>
-    </div>
-
-
-
-
-    <footer class="mobile-footer">
-        <a href="index.html" class="nav-item">Hem</a>
-        <a href="aktiviteter.html" class="nav-item active">Aktiviteter</a>
-        <a href="uppgifter.html" class="nav-item">Uppgifter</a>
-        <a href="sammanstallning.html" class="nav-item">Totalt</a>
-    </footer>
-</div>
-
-
-<script src="js/aktiviteter.js"></script>
+<script src="js/editAktivitet.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 			"acitivityId": 1,
 			"date": "2026-04-20",
 			"time": "01:15",
-			"activity": "Funkar!",
+			"activity": "Gymma",
 			"description": "Körde tungt bröstpass, nytt PB i bänk!"
 		},
 		{
@@ -14,7 +14,7 @@
 			"acitivityId": 1,
 			"date": "2026-04-21",
 			"time": "00:45",
-			"activity": "Funkar!",
+			"activity": "Gymma",
 			"description": "Bara cardio idag för jag hade träningsvärk"
 		},
 		{
@@ -22,7 +22,7 @@
 			"acitivityId": 1,
 			"date": "2026-04-22",
 			"time": "01:30",
-			"activity": "Funkar!",
+			"activity": "Gymma",
 			"description": "Benpass - kan knappt gå nu"
 		},
 		{
@@ -30,7 +30,7 @@
 			"acitivityId": 3,
 			"date": "2026-04-20",
 			"time": "02:00",
-			"activity": "gg",
+			"activity": "Skola",
 			"description": "Bytte munstycke och putsade kåporna"
 		},
 		{
@@ -38,7 +38,7 @@
 			"acitivityId": 3,
 			"date": "2026-04-21",
 			"time": "01:00",
-			"activity": "gg",
+			"activity": "Skola",
 			"description": "Ute och glidit med polarna i solen"
 		},
 		{
@@ -46,7 +46,7 @@
 			"acitivityId": 3,
 			"date": "2026-04-22",
 			"time": "00:15",
-			"activity": "gg",
+			"activity": "Skola",
 			"description": "Tankade och kollade lufttrycket i däcken"
 		},
 		{
@@ -54,7 +54,7 @@
 			"acitivityId": 2,
 			"date": "2026-04-20",
 			"time": "00:20",
-			"activity": "nej",
+			"activity": "Jobb",
 			"description": "Öppnade boken men råkade somna"
 		},
 		{
@@ -62,7 +62,7 @@
 			"acitivityId": 2,
 			"date": "2026-04-21",
 			"time": "01:45",
-			"activity": "nej",
+			"activity": "Jobb",
 			"description": "Skrev klart hela labbrapporten, äntligen!"
 		},
 		{
@@ -70,7 +70,7 @@
 			"acitivityId": 2,
 			"date": "2026-04-22",
 			"time": "00:30",
-			"activity": "nej",
+			"activity": "Jobb",
 			"description": "Tränade glosor medan jag åt mellis"
 		}
 	]
