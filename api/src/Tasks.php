@@ -33,7 +33,7 @@ function tasklists(Route $route): Response {
  */
 
 function tasks(Route $route, array $postData): Response {
-    return new Response("Tasks");
+
     try {
         if (count($route->getParams()) === 1 && $route->getMethod() === RequestMethod::GET) {
             return hamtaEnskildUppgift($route->getParams()[0]);
@@ -183,12 +183,46 @@ WHERE datum BETWEEN :from AND :to");
 
 }
 
-/**
- * Hämtar en enskild uppgiftspost
- * @param string $id Id för post som ska hämtas
- * @return Response
- */
+
 function hamtaEnskildUppgift(string $id): Response {
+
+    // Kontrollera indata
+    $taskid=filter_var($id, FILTER_VALIDATE_INT);
+
+    if($taskid === false){
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Ogiltigt uppgiftsid"];
+        return new Response($retur, 400);
+    }
+
+    // koppla databas
+    $db=connectDb();
+
+    // Hämta post
+    $stmt = $db->prepare("SELECT uppgifter.id, aktivitet_id, datum, varaktighet,aktivitet, beskrivning 
+FROM uppgifter
+INNER JOIN aktiviteter ON aktiviteter.id=aktivitet_id
+WHERE uppgifter.id=:id");
+    $stmt->execute(["id" => $taskid]);
+
+    // Returnera svar
+    $row=$stmt->fetch();
+    if(!$row){
+        $retur = new stdClass();
+        $retur->error = ["Bad request", "Angiven id ($taskid) finns inte i databasen"];
+        return new Response($retur, 400);
+    }
+
+
+    $retur=new stdClass();
+    $retur->id=$row['id'];
+    $retur->date=$row['datum'];
+    $retur->time=substr($row['varaktighet'], 0, 5);
+    $retur->activityId=$row['aktivitet_id'];
+    $retur->activity=$row['aktivitet'];
+    $retur->description=$row['beskrivning'];
+
+    return new Response($retur);
 }
 
 
@@ -211,11 +245,37 @@ function uppdateraUppgift(string $id, array $postData): Response {
     
 }
 
-/**
- * Raderar en uppgiftspost
- * @param string $id Id för posten som ska raderas
- * @return Response
- */
+
 function raderaUppgift(string $id): Response {
-    
-}
+
+    // kontrollera indata
+    $taskId = filter_var($id, FILTER_VALIDATE_INT);
+
+    if ($taskId === false) {
+        $retur = new stdClass();
+        $retur->error = ['Bad request', 'Ogiltigt id'];
+        return new Response($retur, 400);
+    }
+
+    // Koppla databas
+    $db=connectDb();
+
+
+        // Skicka fråga
+        $stmt=$db->prepare('DELETE FROM uppgifter WHERE id=:id');
+        $stmt->execute(['id'=>$taskId]);
+
+        // Kontrollera svar och returnera svar
+        if($stmt->rowCount()==0) {
+            $retur=new stdClass();
+            $retur->result=false;
+            $retur->message=['Radera misslyckades', 'Inga poster raderades'];
+            return new Response($retur);
+        }
+
+        $retur=new stdClass();
+        $retur->result=true;
+        $retur->message=['Radera lyckades', "{$stmt->rowCount()} poster raderades"];
+        return new Response($retur);
+    }
+

@@ -17,7 +17,7 @@ function hamtaAktiviteter() {
 
 
 // Laddar uppgifter från JSON första gången localStorage är tomt
-async function laddaFranJSONomTomt() {
+async function getTasklist() {
     if (hamtaUppgifter().length > 0) return;
 
     try {
@@ -109,6 +109,21 @@ function fyllLista() {
         });
     });
 }
+// Sätter datumfältet till första och sista dagen i aktuell månad
+function setDateInterval() {
+    const idag = new Date();
+    const ar = idag.getFullYear();
+    const manad = idag.getMonth();
+
+    const fran = new Date(ar, manad, 1, 24).toISOString().substring(0, 10);
+    const till = new Date(ar, manad + 1, 0, 24).toISOString().substring(0, 10);
+
+    const franFalt = document.getElementById("franDatum");
+    const tillFalt = document.getElementById("tillDatum");
+
+    if (franFalt) franFalt.value = fran;
+    if (tillFalt) tillFalt.value = till;
+}
 
 
 // Navigerar till redigeringssidan med valt id
@@ -125,9 +140,55 @@ function raderaUppgift(id) {
     fyllLista();
 }
 
+function aktiveraAlternativ(ev) {
+    try {
+    if(ev.target.value==="sida") {
+        //aktivera rätt kontroller
+        document.getElementById("sidnr").disabled = false;
+        document.getElementById("hamtaSida").disabled = false;
+        // Avaktivera övringa kontroller
+        document.getElementById("franDatum").disabled = true;
+        document.getElementById("tillDatum").disabled = true;
+        document.getElementById("hamta").disabled = true;
+    } else {
+        // Aktivera rätt kontroller
+        document.getElementById("franDatum").disabled = false;
+        document.getElementById("tillDatum").disabled = false;
+        document.getElementById("hamta").disabled = true;
+        // Avaktivera övringa kontroller
+        document.getElementById("sidnr").disabled = true;
+        document.getElementById("hamtaSida").disabled = true;
+    }
+    } catch (error) {
+        console.error(error)
+        //aktivera rätt kontroller
+        document.getElementById("franDatum").disabled = false;
+        document.getElementById("tillDatum").disabled = false;
+        document.getElementById("hamta").disabled = false;
+        // Avaktivera övringa kontroller
+        document.getElementById("sidnr").disabled = true;
+        document.getElementById("hamtaSida").disabled = true;
+
+    }
+
+}
+
+
+
+
+
+
+
+
 
 // Startar sidan  laddar JSON om tomt och visar listan
 document.addEventListener("DOMContentLoaded", async () => {
-    await laddaFranJSONomTomt();
+    await getTasklist();
+    fyllLista();
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+    setDateInterval(); // sätt datumintervall
+    await getTasklist();
     fyllLista();
 });

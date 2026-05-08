@@ -23,17 +23,18 @@
         <main class="content">
 
             <p>
-                <input type="radio" id="alternativ" value="period" checked>
+                <input type="radio" name="alternativ" value="period" checked onchange="aktiveraAlternativ(event)">
                 Period:
-                <input type="date" id="franDatum" value="2026-05-01">
-                <input type="date" id="tillDatum" value="2026-06-01">
+                <input type="date" id="franDatum" >
+                <input type="date" id="tillDatum" >
                 <button id="hamta">Hämta data</button>
             </p>
 
             <p>
-                <input type="radio" name="alternativ" value="sida">
+                <input type="radio" name="alternativ" value="sida" onchange="aktiveraAlternativ(event)">
+
                 Sida:
-                <select>
+                <select id="sidnr">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -68,7 +69,7 @@
 
 
     <p>
-        <input type="radio" id="alternativ" value="period" checked>
+        <input type="radio" id="mobil_alternativ" value="period" checked>
         Period:
         <input type="date" id="franDatum-mobil" value="2026-05-01">
         <input type="date" id="tillDatum-mobil" value="2026-06-01">
