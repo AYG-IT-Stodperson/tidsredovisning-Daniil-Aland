@@ -29,17 +29,45 @@ function fyllAktivitetsval() {
     ).join("");
 }
 
-// Fyller dropdown med aktiviteter från en lista
-function fillDropdown(aktiviteter) {
-    let dropdown = document.getElementById("uppgift-aktivitet");
-    dropdown.innerHTML = "";
+// Validerar formuläret innan sparning
+function valideraFormular() {
+    let valid = true;
 
-    for (let i = 0; i < aktiviteter.length; i++) {
-        let option = document.createElement("option");
-        option.value = aktiviteter[i].id;
-        option.text  = aktiviteter[i].activity;
-        dropdown.append(option);
+    const datum = document.getElementById("uppgift-datum").value;
+    const tid   = document.getElementById("uppgift-tid").value;
+    const akt   = document.getElementById("uppgift-aktivitet");
+
+    // Inte i framtiden
+    if (datum > new Date().toISOString().substring(0, 10)) {
+        alert("Datum kan inte vara i framtiden.");
+        valid = false;
     }
+
+    // Max 8 timmar
+    if (tid > "08:00") {
+        alert("Max 8 timmar per uppgift.");
+        valid = false;
+    }
+
+    // Min 15 minuter
+    if (tid < "00:15") {
+        alert("Minst 15 minuter per uppgift.");
+        valid = false;
+    }
+
+    // Endast 15-minutersintervall
+    if (!["00", "15", "30", "45"].includes(tid.substring(3, 5))) {
+        alert("Tid måste anges i 15-minutersintervall.");
+        valid = false;
+    }
+
+    // Aktivitet måste vara vald
+    if (akt.selectedIndex < 0) {
+        alert("Välj en aktivitet.");
+        valid = false;
+    }
+
+    return valid;
 }
 
 // Fyller formuläret - hämtar från localStorage, annars från JSON
@@ -77,6 +105,10 @@ async function fillForm(id) {
         return;
     }
 
+    // Sätt max till dagens datum
+    const idag = new Date().toISOString().split("T")[0];
+    document.getElementById("uppgift-datum").max = idag;
+
     // Fyll i formuläret
     document.getElementById("form-titel").textContent    = "Redigera uppgift";
     document.getElementById("visa-id").textContent       = `ID: ${u.id}`;
@@ -90,6 +122,7 @@ async function fillForm(id) {
 function emptyForm() {
     const idag = new Date().toISOString().split("T")[0];
     document.getElementById("uppgift-datum").value = idag;
+    document.getElementById("uppgift-datum").max   = idag;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -106,12 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Lyssnar på spara-knappen
     document.getElementById("spara-btn").addEventListener("click", () => {
+        if (!valideraFormular()) return;
+
         const aktivitetId = parseInt(document.getElementById("uppgift-aktivitet").value);
         const datum       = document.getElementById("uppgift-datum").value;
         const tid         = document.getElementById("uppgift-tid").value;
         const beskrivning = document.getElementById("uppgift-beskrivning").value.trim();
-
-        if (!datum || !tid) { alert("Fyll i datum och tid."); return; }
 
         const lista = hamtaUppgifter();
 

@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tidapp - Redigera Uppgift</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/editUppgift.css">
 </head>
 <body>
 
-
 <div class="desktop-wrapper">
     <header class="header">Tidapp - Uppgifter</header>
-
 
     <div class="main-layout">
         <aside class="sidebar">
@@ -21,33 +20,33 @@
             <a href="sammanstallning.html" class="nav-item">TOTALT</a>
         </aside>
 
-
         <main class="content">
             <h2 id="form-titel">Ny uppgift</h2>
 
 
             <div class="log-form">
-                <div class="input-field">
-                    <span id="visa-id" class="id-text"></span>
-                    <label>Aktivitet</label>
-                    <select id="uppgift-aktivitet"></select>
-                </div>
+                <div class="input-field edit-id-field">
+                <span id="visa-id" class="id-text"></span>
 
+
+
+                    <label>Aktivitet</label>
+
+                    <select id="uppgift-aktivitet" required></select>
+
+                </div>
                 <div class="input-field">
                     <label>Datum</label>
-                    <input type="date" id="uppgift-datum">
+                    <input type="date" id="uppgift-datum" required>
                 </div>
-
                 <div class="input-field">
-                    <label>Tid (tim)</label>
-                    <input type="number" id="uppgift-tid" placeholder="0" step="0.5">
+                    <label>Varaktighet</label>
+                    <input type="time" id="uppgift-tid" required min="00:15" max="08:00" step="900">
                 </div>
-
                 <div class="input-field">
                     <label>Beskrivning</label>
                     <input type="text" id="uppgift-beskrivning" placeholder="Vad gjorde du?">
                 </div>
-
                 <div class="edit-buttons">
                     <button class="save-btn" id="spara-btn">Spara</button>
                     <a href="uppgifter.html" class="cancel-btn">Avbryt</a>
@@ -56,7 +55,6 @@
         </main>
     </div>
 </div>
-
 
 <script src="js/editUppgift.js"></script>
 <script src="js/main.js"></script>

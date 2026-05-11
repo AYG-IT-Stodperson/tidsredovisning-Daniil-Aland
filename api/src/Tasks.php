@@ -3,12 +3,6 @@
 declare (strict_types=1);
 require_once __DIR__ . '/activities.php';
 
-/**
- * Hämtar en lista med alla uppgifter och tillhörande aktiviteter 
- * Beroende på indata returneras en sida eller ett datumintervall
- * @param Route $route indata med information om vad som ska hämtas
- * @return Response
- */
 function tasklists(Route $route): Response {
 
     try {
@@ -25,12 +19,6 @@ function tasklists(Route $route): Response {
     return new Response("Okänt anrop", 400);
 }
 
-/**
- * Läs av rutt-information och anropa funktion baserat på angiven rutt
- * @param Route $route Rutt-information
- * @param array $postData Indata för behandling i angiven rutt
- * @return Response
- */
 
 function tasks(Route $route, array $postData): Response {
 
@@ -231,8 +219,45 @@ WHERE uppgifter.id=:id");
  * @param array $postData indata för uppgiften
  * @return Response
  */
+
+
+
 function sparaNyUppgift(array $postData): Response {
-    
+
+    // Kontrollera indata
+    $indataErr=kontrolleraIndata($postData);
+
+    if(count($indataErr)===0) {
+        $retur = new stdClass();
+        $retur->error = array_merge(["Bad request"], $indataErr);
+
+        return new Response($retur, 400);
+    }
+    if(!array_key_exists('description', $postData)) {
+        $postData['description']="";
+    } else {
+        $postData['description']=htmlspecialchars($postData['description']);
+    }
+
+
+    unset($postData['action']);
+
+    // Koppla databas
+    $db=connectDb();
+
+    // Skicka fråga
+    $stmt=$db->prepare('INSERT INTO uppgifter (aktivitet_id, datum, varaktighet, beskrivning)
+VALUES (:activityId, :date, :time, :description)');
+    $stmt->execute($postData);
+
+    // Returnera svar
+    $nyttId=$db->lastInsertId();
+    $retur = new stdClass();
+    $retur->id=$nyttId;
+    $retur->meddelande = ["Spara lyckades"];
+
+    return new Response($retur);
+
 }
 
 /**
@@ -242,8 +267,58 @@ function sparaNyUppgift(array $postData): Response {
  * @return Response
  */
 function uppdateraUppgift(string $id, array $postData): Response {
-    
+
+    // Kontrollera indata
+    $indataErr=kontrolleraIndata($postData);
+
+    if(count($indataErr)===0) {
+        $retur = new stdClass();
+        $retur->error = array_merge(["Bad request"], $indataErr);
+
+        return new Response($retur, 400);
+    }
+    if(!array_key_exists('description', $postData)) {
+        $postData['description']="";
+    } else {
+        $postData['description']=htmlspecialchars($postData['description']);
+    }
+
+
+    $taskId = filter_var($id, FILTER_VALIDATE_INT);
+
+    if ($taskId === false) {
+        $retur = new stdClass();
+        $retur->error = ['Bad request', 'Ogiltigt id'];
+        return new Response($retur, 400);
+    }
+
+    $postData['id']=$taskId;
+    unset($postData['action']);
+
+    // Koppla databas
+    $db=connectDb();
+
+    // Skicka fråga
+    $stmt=$db->prepare('UPDATE uppgifter SET 
+                     datum=:date, varaktighet=:time, aktivitet=:activityId, beskrivning=:description
+                     WHERE id=:id');
+    $stmt->execute($postData);
+
+    // Kontrollera svar från
+    $retur = new stdClass();
+    if($stmt->rowCount()==0) {
+        $retur->result=false;
+        $retur->message= ["Uppdatera misslyckades", "Inga rader uppdaterades"];
+    } else {
+        $retur->result=true;
+        $retur->message = ["Uppdatera lyckades", "{$stmt->rowCount()} rader uppdaterades"];
+    }
+
+
+    return new Response($retur);
 }
+
+
 
 
 function raderaUppgift(string $id): Response {
@@ -279,3 +354,53 @@ function raderaUppgift(string $id): Response {
         return new Response($retur);
     }
 
+
+
+
+function kontrolleraIndata(array $postData):array {
+    $returArray=[];
+    // Indatakontroller för datum ($postData["date"])
+    if(array_key_exists("date", $postData)){
+        $datum=DateTimeImmutable::createFromFormat('Y-m-d', $postData['date']);
+        if($datum===false){
+            $returArray[]="Ogiltigt datum";
+        } elseif($datum->format('Y-m-d')!==$postData['date']) {
+            $returArray[]="Ogiltigt datum-format";
+        } elseif($datum->format('Y-m-d')>date('date')) {
+            $returArray[]="Datum får inte vara i framtiden";
+        }
+    } else {
+        $returArray[]="Datum ('date') saknas";
+    }
+
+    // Indatakontroller för varaktighet ($postData["time"])
+    if(array_key_exists("time", $postData)){
+        $varaktighet=DateTimeImmutable::createFromFormat('H:m', $postData['time']);
+        if($varaktighet===false){
+            $returArray[]="Ogiltigt varaktighet";
+        } elseif ($varaktighet->format('H:i')!==$postData['time']) {
+            $returArray[] = "Ogiltigt tidsangivelse för varaktighet";
+        } elseif ($postData["time"]>"08:00"||$postData["time"]<"00:15") {
+            $returArray[]="Varaktigheten ska vara mindre än 8 timmar";
+        } elseif(in_array(substr($postData["time"], -2), ["00", "15", "30", "45"])) {
+            $returArray[] = "Ange varaktigheten i jämna 15 minuter";
+        }
+    } else {
+        $returArray[]="Varaktighet ('time') saknas";
+    }
+
+
+    // Indatakontroll för aktivitetstid ($postData["activityId"])
+    if(in_array("activityId", $postData)){
+        $activityId=filter_var($postData['activityId'], FILTER_VALIDATE_INT);
+        if($activityId===false){
+            $returArray[]="Ogiltigt aktivitetsid";
+        } elseif($activityId<1){
+            $returArray[]="Aktivitetsid ('activityId') ska vara större än noll";
+        }
+    } else {
+       $returArray[]="Aktivitet ('activityId') saknas";
+    }
+
+    return $returArray;
+}
