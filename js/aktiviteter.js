@@ -16,29 +16,85 @@ function hamtaIdFranURL() {
 
 
 
-async function laddaFranJSONomTomt() {
+// ─── DATUMFILTER ──────────────────────────────────────────────
+
+/**
+ * Filtrerar aktivitetslistan till poster vars datum
+ * faller inom intervallet [from, to] (inklusivt).
+ *
+ * @param {string|Date} from - Startdatum (t.ex. "2024-01-01")
+ * @param {string|Date} to   - Slutdatum  (t.ex. "2024-12-31")
+ * @returns {Array} Filtrerad lista med aktiviteter
+ */
+function setDateInterval(from, to) {
+    const start = new Date(from);
+    const end   = new Date(to);
+
+    return hamtaAktiviteter().filter(a => {
+        if (!a.datum) return false;
+        const d = new Date(a.datum);
+        return d >= start && d <= end;
+    });
+}
+
+
+
+// ─── HÄMTA AKTIVITETER FRÅN JSON ──────────────────────────────
+
+/**
+ * Hämtar aktiviteter från JSON och sparar till localStorage,
+ * men bara om localStorage redan är tomt.
+ * Kastar ett strukturerat felobjekt vid HTTP-fel.
+ */
+async function getActivities() {
     if (hamtaAktiviteter().length > 0) return; // redan data, skippa
 
     try {
-        const response = await fetch("dummy/aktiviteter.json");
-        if (!response.ok) return;
-        const data = await response.json();
+        const response = await fetch("api/activity");
 
-        const lista = data.activities.map(a => ({
-            id: a.id,
-            namn: a.aktivitet
-        }));
+        if (response.ok) {
+            const data = await response.json();
 
-        sparaAktiviteter(lista);
+            const lista = data.activities.map(a => ({
+                id:    a.id,
+                namn:  a.activity,
+                datum: a.datum ?? null   // null om fältet saknas i JSON
+            }));
+
+            sparaAktiviteter(lista);
+        } else {
+            let message = null;
+            try {
+                message = await response.json();
+            } finally {
+                const fel = {
+                    status:  response.status,
+                    text:    response.statusText,
+                    url:     response.url,
+                    message
+                };
+                throw fel;
+            }
+        }
     } catch (e) {
+        // Vidarekastar strukturerade felobjekt; loggar övriga nätverksfel
+        if (e.status !== undefined) throw e;
         console.error("Kunde inte ladda JSON:", e);
     }
 }
 
 
 
-function fyllLista() {
-    const aktiviteter = hamtaAktiviteter();
+// ─── LISTA ────────────────────────────────────────────────────
+
+/**
+ * Fyller .item-list / .item-list-mobil med aktiviteter.
+ * Om en filtrerad lista skickas in används den, annars hela localStorage.
+ *
+ * @param {Array|null} [filtrerad=null]
+ */
+function fyllLista(filtrerad = null) {
+    const aktiviteter = filtrerad ?? hamtaAktiviteter();
     const targets = document.querySelectorAll(".item-list, .item-list-mobil");
     if (targets.length === 0) return;
 
@@ -50,6 +106,7 @@ function fyllLista() {
             div.className = "item activity-card";
             div.innerHTML = `
                 <span class="activity-name">${a.namn}</span>
+                ${a.datum ? `<span class="activity-date">${a.datum}</span>` : ""}
                 <div class="action-buttons">
                     <button class="btn-outline" onclick="redigeraAktivitet(${a.id})">Redigera</button>
                     <button class="btn-outline btn-delete" onclick="raderaAktivitet(${a.id})">Radera</button>
@@ -72,6 +129,8 @@ function raderaAktivitet(id) {
 }
 
 
+
+// ─── FORMULÄR ─────────────────────────────────────────────────
 
 function fyllFormularMedAktivitet(id) {
     const a = hamtaAktiviteter().find(a => a.id === id);
@@ -104,11 +163,9 @@ function sparaFormular() {
     const lista = hamtaAktiviteter();
 
     if (id === null) {
-
         const nyttId = lista.length > 0 ? Math.max(...lista.map(a => a.id)) + 1 : 1;
-        lista.push({ id: nyttId, namn });
+        lista.push({ id: nyttId, namn, datum: null });
     } else {
-
         const index = lista.findIndex(a => a.id === id);
         if (index !== -1) lista[index].namn = namn;
     }
@@ -119,13 +176,19 @@ function sparaFormular() {
 
 
 
+// ─── INIT ─────────────────────────────────────────────────────
+
 document.addEventListener("DOMContentLoaded", async () => {
     const paListSidan = document.querySelector(".item-list, .item-list-mobil");
     const paEditSidan = document.getElementById("spara-btn") ||
         document.getElementById("mob-spara-btn");
 
     if (paListSidan) {
-        await laddaFranJSONomTomt(); // hämtar JSON bara om localStorage är tomt
+        try {
+            await getActivities(); // hämtar JSON bara om localStorage är tomt
+        } catch (fel) {
+            console.error("Fel vid hämtning:", fel);
+        }
         fyllLista();
     }
 

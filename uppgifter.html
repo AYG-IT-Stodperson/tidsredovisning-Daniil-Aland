@@ -25,14 +25,13 @@
             <p>
                 <input type="radio" name="alternativ" value="period" checked onchange="aktiveraAlternativ(event)">
                 Period:
-                <input type="date" id="franDatum" >
-                <input type="date" id="tillDatum" >
-                <button id="hamta">Hämta data</button>
+                <input type="date" id="franDatum">
+                <input type="date" id="tillDatum">
+                <button id="hamta" disabled>Hämta data</button>
             </p>
 
             <p>
                 <input type="radio" name="alternativ" value="sida" onchange="aktiveraAlternativ(event)">
-
                 Sida:
                 <select id="sidnr">
                     <option>1</option>
@@ -43,8 +42,6 @@
                 <button id="hamtaSida">Hämta data</button>
             </p>
 
-
-
             <h2>Uppgifter</h2>
             <button class="save-btn" onclick="window.location.href='editUppgift.html'">
                 + Skapa ny uppgift
@@ -52,8 +49,6 @@
             <div class="item-list"></div>
 
         </main>
-
-
     </div>
 </div>
 
@@ -67,18 +62,25 @@
         <button class="add-mobile-btn" onclick="window.location.href='editUppgift.html'">+</button>
     </header>
 
-
     <p>
-        <input type="radio" id="mobil_alternativ" value="period" checked>
+        <input type="radio" name="alternativ-mobil" id="mobil_alternativ" value="period" checked>
         Period:
-        <input type="date" id="franDatum-mobil" value="2026-05-01">
-        <input type="date" id="tillDatum-mobil" value="2026-06-01">
-        <button id="hamtamobil">Hämta data</button>
+        <input type="date" id="franDatum-mobil">
+        <input type="date" id="tillDatum-mobil">
+        <button id="hamta-mobil" disabled>Hämta data</button>
     </p>
 
-
-
-
+    <p>
+        <input type="radio" name="alternativ-mobil" value="sida">
+        Sida:
+        <select id="sidnr-mobil">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+        <button id="hamtaSida-mobil">Hämta data</button>
+    </p>
 
     <div class="mobile-content">
         <div class="item-list-mobil"></div>

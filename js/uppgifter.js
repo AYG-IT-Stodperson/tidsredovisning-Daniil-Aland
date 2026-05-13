@@ -16,28 +16,47 @@ function hamtaAktiviteter() {
 }
 
 
-// Laddar uppgifter från JSON första gången localStorage är tomt
-async function getTasklist() {
-    if (hamtaUppgifter().length > 0) return;
+// Hämtar poster baserat på sidnummer (desktop eller mobil)
+function hamtaSida(mobilEl = false) {
+    const sidnr = mobilEl
+        ? document.getElementById("sidnr-mobil").value
+        : document.getElementById("sidnr").value;
 
-    try {
-        const response = await fetch("dummy/uppgifter.json");
-        if (!response.ok) return;
-        const data = await response.json();
+    fetch(`api/tasklist/${sidnr}`)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
 
-        const lista = data.tasks.map(t => ({
-            id: t.id,
-            aktivitetId: t.aktivitetId ?? null,
-            aktivitet: t.aktivitet ?? t.activity ?? "",
-            datum: t.datum ?? t.date ?? "",
-            tid: t.tid ?? t.time ?? "",
-            beskrivning: t.beskrivning ?? t.description ?? ""
-        }));
+            // response är inte ok...
+            return response.json()
+                .catch(() => null) // Är svaret inte json händer inget
+                .then((message) => {
+                    let fel = {
+                        status:  response.status,
+                        text:    response.statusText,
+                        url:     response.url,
+                        message
+                    };
+                    throw fel;
+                });
+        })
+        .then((data) => {
+            const lista = data.tasks.map(t => ({
+                id:          t.id,
+                aktivitetId: t.aktivitetId ?? null,
+                aktivitet:   t.aktivitet ?? t.activity ?? "",
+                datum:       t.datum ?? t.date ?? "",
+                tid:         t.tid ?? t.time ?? "",
+                beskrivning: t.beskrivning ?? t.description ?? ""
+            }));
 
-        sparaUppgifter(lista);
-    } catch (e) {
-        console.error("Kunde inte ladda uppgifter.json:", e);
-    }
+            sparaUppgifter(lista);
+            fyllLista();
+        })
+        .catch((fel) => {
+            console.error("Fel vid hämtning av sida:", fel);
+        });
 }
 
 
@@ -53,7 +72,6 @@ function fyllLista() {
         target.innerHTML = "";
         const isMobile = target.classList.contains("item-list-mobil");
 
-
         // Rubrikrad bara på desktop
         if (!isMobile) {
             const rubrik = document.createElement("ul");
@@ -67,7 +85,6 @@ function fyllLista() {
             `;
             target.appendChild(rubrik);
         }
-
 
         // Loopar igenom varje uppgift och skapar en rad
         uppgifter.forEach(u => {
@@ -109,6 +126,8 @@ function fyllLista() {
         });
     });
 }
+
+
 // Sätter datumfältet till första och sista dagen i aktuell månad
 function setDateInterval() {
     const idag = new Date();
@@ -118,11 +137,17 @@ function setDateInterval() {
     const fran = new Date(ar, manad, 1, 24).toISOString().substring(0, 10);
     const till = new Date(ar, manad + 1, 0, 24).toISOString().substring(0, 10);
 
+    // Desktop
     const franFalt = document.getElementById("franDatum");
     const tillFalt = document.getElementById("tillDatum");
-
     if (franFalt) franFalt.value = fran;
     if (tillFalt) tillFalt.value = till;
+
+    // Mobil
+    const franMobil = document.getElementById("franDatum-mobil");
+    const tillMobil = document.getElementById("tillDatum-mobil");
+    if (franMobil) franMobil.value = fran;
+    if (tillMobil) tillMobil.value = till;
 }
 
 
@@ -140,55 +165,41 @@ function raderaUppgift(id) {
     fyllLista();
 }
 
+
 function aktiveraAlternativ(ev) {
     try {
-    if(ev.target.value==="sida") {
-        //aktivera rätt kontroller
-        document.getElementById("sidnr").disabled = false;
-        document.getElementById("hamtaSida").disabled = false;
-        // Avaktivera övringa kontroller
-        document.getElementById("franDatum").disabled = true;
-        document.getElementById("tillDatum").disabled = true;
-        document.getElementById("hamta").disabled = true;
-    } else {
-        // Aktivera rätt kontroller
-        document.getElementById("franDatum").disabled = false;
-        document.getElementById("tillDatum").disabled = false;
-        document.getElementById("hamta").disabled = true;
-        // Avaktivera övringa kontroller
-        document.getElementById("sidnr").disabled = true;
-        document.getElementById("hamtaSida").disabled = true;
-    }
+        if (ev.target.value === "sida") {
+            document.getElementById("sidnr").disabled = false;
+            document.getElementById("hamtaSida").disabled = false;
+            document.getElementById("franDatum").disabled = true;
+            document.getElementById("tillDatum").disabled = true;
+            document.getElementById("hamta").disabled = true;
+        } else {
+            document.getElementById("franDatum").disabled = false;
+            document.getElementById("tillDatum").disabled = false;
+            document.getElementById("hamta").disabled = false;
+            document.getElementById("sidnr").disabled = true;
+            document.getElementById("hamtaSida").disabled = true;
+        }
     } catch (error) {
-        console.error(error)
-        //aktivera rätt kontroller
+        console.error(error);
         document.getElementById("franDatum").disabled = false;
         document.getElementById("tillDatum").disabled = false;
         document.getElementById("hamta").disabled = false;
-        // Avaktivera övringa kontroller
         document.getElementById("sidnr").disabled = true;
         document.getElementById("hamtaSida").disabled = true;
-
     }
-
 }
 
 
-
-
-
-
-
-
-
-// Startar sidan  laddar JSON om tomt och visar listan
-document.addEventListener("DOMContentLoaded", async () => {
-    await getTasklist();
+// Startar sidan
+document.addEventListener("DOMContentLoaded", () => {
+    setDateInterval();
     fyllLista();
-});
 
-document.addEventListener("DOMContentLoaded", async () => {
-    setDateInterval(); // sätt datumintervall
-    await getTasklist();
-    fyllLista();
+    // Desktop-knapp
+    document.getElementById("hamtaSida")?.addEventListener("click", () => hamtaSida(false));
+
+    // Mobil-knapp
+    document.getElementById("hamtaSida-mobil")?.addEventListener("click", () => hamtaSida(true));
 });
