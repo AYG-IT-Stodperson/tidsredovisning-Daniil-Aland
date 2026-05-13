@@ -70,52 +70,62 @@ function valideraFormular() {
     return valid;
 }
 
-// Fyller formuläret - hämtar från localStorage, annars från JSON
-async function fillForm(id) {
-    let u = hamtaUppgifter().find(u => u.id === id);
-
-    // Om inte i localStorage, hämta från JSON
-    if (!u) {
-        try {
-            const response = await fetch("dummy/uppgifter.json");
-            if (response.ok) {
-                const data = await response.json();
-                const post = data.tasks.find(t => t.id == id);
-                if (post) {
-                    u = {
-                        id:          post.id,
-                        aktivitetId: post.aktivitetId ?? null,
-                        datum:       post.datum ?? post.date ?? "",
-                        tid:         post.tid ?? post.time ?? "",
-                        beskrivning: post.beskrivning ?? post.description ?? ""
-                    };
-                }
-            } else {
-                const message = await response.json().catch(() => null);
-                throw { status: response.status, text: response.statusText, url: response.url, message };
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    if (!u) {
-        alert("Uppgiften hittades inte");
-        emptyForm();
-        return;
-    }
-
-    // Sätt max till dagens datum
+// Fyller i formuläret med data från ett uppgiftsobjekt
+function fyllFormularMedData(post) {
     const idag = new Date().toISOString().split("T")[0];
     document.getElementById("uppgift-datum").max = idag;
 
-    // Fyll i formuläret
     document.getElementById("form-titel").textContent    = "Redigera uppgift";
-    document.getElementById("visa-id").textContent       = `ID: ${u.id}`;
-    document.getElementById("uppgift-aktivitet").value   = u.aktivitetId;
-    document.getElementById("uppgift-datum").value       = u.datum;
-    document.getElementById("uppgift-tid").value         = u.tid;
-    document.getElementById("uppgift-beskrivning").value = u.beskrivning;
+    document.getElementById("visa-id").textContent       = `ID: ${post.id}`;
+    document.getElementById("uppgift-aktivitet").value   = post.activityId  ?? post.aktivitetId;
+    document.getElementById("uppgift-datum").value       = post.date        ?? post.datum;
+    document.getElementById("uppgift-tid").value         = post.time        ?? post.tid;
+    document.getElementById("uppgift-beskrivning").value = post.description ?? post.beskrivning;
+}
+
+// Hämtar uppgift — först localStorage, sedan API
+async function fillForm(id) {
+    // Försök localStorage först
+    let u = hamtaUppgifter().find(u => u.id === id);
+    if (u) {
+        fyllFormularMedData(u);
+        return;
+    }
+
+    // Inte i localStorage — hämta från API
+    try {
+        let response = await fetch(`api/task/${id}`);
+
+        if (response.ok) {
+            let post = await response.json();
+
+            document.getElementById("labelId").style.display = "initial";
+            document.getElementById("valueId").innerText     = post.id;
+            document.getElementById("inputDatum").value      = post.date;
+            document.getElementById("inputVaraktighet").value = post.time;
+            document.getElementById("inputBeskrivning").value = post.description;
+            document.getElementById("inputAktivitet").value  = post.activityId;
+
+        } else {
+            let message = null;
+            try {
+                message = await response.json();
+            } finally {
+                let fel = {
+                    status:  response.status,
+                    text:    response.statusText,
+                    url:     response.url,
+                    message
+                };
+                throw fel;
+            }
+        }
+    } catch (e) {
+        if (e.status !== undefined) throw e;
+        console.error("Kunde inte hämta uppgift:", e);
+        alert("Uppgiften hittades inte.");
+        emptyForm();
+    }
 }
 
 // Tomt formulär för ny uppgift - fyller i dagens datum
