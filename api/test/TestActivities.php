@@ -26,7 +26,17 @@ function allaActivityTester(): string {
 function test_HamtaAllaAktiviteter(): string {
     $retur = "<h2>test_HamtaAllaAktiviteter</h2>";
     try {
-        $retur .= "<p class='error'>Inga tester implementerade</p>";
+        $svar=hamtaAllaAktiviteter();
+        if($svar->getStatus()==200) {
+            $retur .="<p class= 'ok'> Hämta alla aktiviteter returnerade 200 som förväntat</p>";
+            if (array_key_exists("activities", $svar->getContent())) {
+                $retur .= "<p class='ok'>" . count($svar->getContent()['activities']) . "  poster returnerades</p>";
+            } else {
+                $retur .= "<p class='error'> Arrayen med poster ('activities') saknas</p>";
+            }
+        } else {
+            $retur .= "<p class= 'error'> Hämta alla aktiviteter returnerade {$svar->getStatus()}, 200 förväntades</p>";
+        }
     } catch (Exception $ex) {
         $retur .= "<p class='error'>Något gick fel, meddelandet säger:<br> {$ex->getMessage()}</p>";
     }
@@ -41,7 +51,48 @@ function test_HamtaAllaAktiviteter(): string {
 function test_HamtaEnAktivitet(): string {
     $retur = "<h2>test_HamtaEnAktivitet</h2>";
     try {
-        $retur .= "<p class='error'>Inga tester implementerade</p>";
+        $svar=HamtaEnskildAktivitet("-1");
+        if($svar->getStatus()===400) {
+            $retur .="<p class='ok'>Hämta aktivitet med id=-1 returnerade 400, som förväntat</p>";
+        } else {
+            $retur .="<p class='error'>Hämta aktivitet med id=-1 returnerade {$svar->getStatus()}, 400 förväntades</p>";
+        }
+
+
+        $svar=hamtaEnskildAktivitet("sju");
+        if($svar->getStatus()===400) {
+            $retur .="<p class='ok'>Hämta aktivitet med id='sju' returnerade 400, som förväntat</p>";
+        } else {
+            $retur .="<p class='error'>Hämta aktivitet med id='sju' returnerade {$svar->getStatus()}, 400 förväntades</p>";
+        }
+
+        // Testa hämta id som inte finns
+    $alla=hamtaAllaAktiviteter();
+    $poster=$alla->getContent()['activities'];
+    $maxId=0;
+    foreach ($poster as $item) {
+        if($item->id>$maxId) {
+            $maxId=$item->id;
+        }
+    }
+    $svar = hamtaEnskildAktivitet((string) ($maxId + 1));
+        if($svar->getStatus()===400) {
+            $retur .="<p class='ok'>Hämta post med id som inte finns (". ($maxId+1) .") returnerade 400, som förväntat</p>";
+        } else {
+            $retur .="<p class='error'>Hämta post med id som inte finns ($maxId) returnerade {$svar->getStatus()}, 400 förväntades</p>";
+        }
+
+        // Testa hämta id som finns
+        $id=$poster[0]->id;
+
+        $svar=hamtaEnskildAktivitet((string) $id);
+        if($svar->getStatus()===200) {
+            $retur .="<p class='ok'>Hämta post med id som finns ($id) returnerade 200, som förväntat</p>";
+        } else {
+            $retur .="<p class='error'>Hämta post med id som finns ($id) returnerade {$svar->getStatus()}, 200 förväntades</p>";
+        }
+
+
     } catch (Exception $ex) {
         $retur .= "<p class='error'>Något gick fel, meddelandet säger:<br> {$ex->getMessage()}</p>";
     }
