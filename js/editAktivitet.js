@@ -1,62 +1,95 @@
-// Hämtar aktiviteter från localStorage
-function hamtaAktiviteter() {
-    return JSON.parse(localStorage.getItem("aktiviteter") || "[]");
-}
-
-
-// Sparar aktiviteter till localStorage
-function sparaAktiviteter(lista) {
-    localStorage.setItem("aktiviteter", JSON.stringify(lista));
-}
-
-
-// Läser id från URL:en ex: ?id=3
-function hamtaIdFranURL() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    return id !== null ? parseInt(id) : null;
-}
-
+let allaAktiviteter = []
+let aktivitetsId = null
 
 document.addEventListener("DOMContentLoaded", () => {
-    const id = hamtaIdFranURL();
+    const params = new URLSearchParams(window.location.search)
+    aktivitetsId = params.has("id") ? parseInt(params.get("id")) : null
 
+    // Hämta alla aktiviteter från API:et
+    fetch("api/activity")
+        .then(response => {
+            if (response.ok) return response.json()
+            else throw response.json()
+        })
+        .then(data => {
+            allaAktiviteter = data.activities
 
-    // Om id finns i URL:en, fyll i formuläret med befintlig data
-    if (id !== null) {
-        const a = hamtaAktiviteter().find(a => a.id === id);
-        if (a) {
-            document.getElementById("form-titel").textContent = "Redigera aktivitet";
-            document.getElementById("visa-id").textContent    = `ID: ${a.id}`;
-            document.getElementById("aktivitet-namn").value   = a.namn;
-        }
+            if (aktivitetsId !== null) {
+                fillForm(aktivitetsId)
+            } else {
+                emptyForm()
+            }
+        })
+        .catch(error => console.error(error))
+
+    document.getElementById("spara-btn").addEventListener("click", sparaAktivitet)
+})
+
+function fillForm(id) {
+    const a = allaAktiviteter.find(a => a.id === id)
+    if (!a) return
+    document.getElementById("form-titel").textContent = "Redigera aktivitet"
+    document.getElementById("visa-id").textContent    = `ID: ${a.id}`
+    document.getElementById("aktivitet-namn").value   = a.activity
+}
+
+function emptyForm() {
+    document.getElementById("form-titel").textContent = "Ny aktivitet"
+    document.getElementById("visa-id").textContent    = ""
+    document.getElementById("aktivitet-namn").value   = ""
+    document.getElementById("aktivitet-namn").focus()
+}
+
+async function sparaAktivitet() {
+    if (!verifieraForm()) {
+        alert("Åtgärda felen")
+        return
     }
 
+    let formData = new FormData()
+    formData.set("action", "save")
+    formData.set("activity", document.getElementById("aktivitet-namn").value.trim())
 
-    // Lyssnar på spara-knappen
-    document.getElementById("spara-btn").addEventListener("click", () => {
-        const namn = document.getElementById("aktivitet-namn").value.trim();
-        if (!namn) { alert("Ange ett namn."); return; }
+    let response = await fetch(`api/activity/${aktivitetsId ?? ""}`, {
+        method: "POST",
+        body: formData
+    })
 
-        const lista = hamtaAktiviteter();
+    if (!response.ok) {
+        alert("Kunde inte spara aktivitet, kontrollera konsolen")
+        console.error(await response.json())
+        return
+    }
 
+    let svar = await response.json()
+    if (aktivitetsId) {
+        alert("Uppdatera lyckades")
+        window.location.href = "aktiviteter.html"
+    } else {
+        alert("Spara ny aktivitet lyckades")
+        window.location.href = `editAktivitet.html?id=${svar.id}`
+    }
+}
 
-        if (id === null) {
+function verifieraForm() {
+    let returKod = true
 
+    document.getElementById("aktivitet-namn").setCustomValidity("")
 
-            // Ny aktivitet - generera nytt id
-            const nyttId = lista.length > 0 ? Math.max(...lista.map(a => a.id)) + 1 : 1;
-            lista.push({ id: nyttId, namn });
-        } else {
+    let aktivitet = document.getElementById("aktivitet-namn").value.trim()
 
-            // Uppdatera befintlig aktivitet
-            const index = lista.findIndex(a => a.id === id);
-            if (index !== -1) lista[index].namn = namn;
-        }
+    if (aktivitet === "") {
+        alert("Aktiviteten måste finnas")
+        document.getElementById("aktivitet-namn").setCustomValidity("Aktiviteten måste finnas")
+        returKod = false
+    } else if (allaAktiviteter.find(a =>
+        a.activity.toLocaleLowerCase() === aktivitet.toLocaleLowerCase() &&
+        a.id !== aktivitetsId
+    )) {
+        alert("Aktiviteten finns redan")
+        document.getElementById("aktivitet-namn").setCustomValidity("Aktiviteten finns redan")
+        returKod = false
+    }
 
-
-
-        sparaAktiviteter(lista);
-        window.location.href = "aktiviteter.html";
-    });
-});
+    return returKod
+}

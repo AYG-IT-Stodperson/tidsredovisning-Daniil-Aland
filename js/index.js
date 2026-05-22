@@ -1,97 +1,73 @@
 window.onload = () => {
-    // Rensa listan
-    rensaLista();
+    rensaLista()
+    setDateInterval()
+    getCompilation()
 
-    // Sätt standardvärden för perioden
-    setDateInterval();
-
-    // Hämta från API:et
-    getCompilation();
-
-}
-
-function getCompilation() {
-    fetch("dummy/sammanstallning.json")
-        .then(response =>{
-            if(response.ok) {
-                return response.json()
-            }
-
-
-            // response är inte ok..
-            return response.json()
-                .catch(() =>null) // Är svaret inte json händer inget
-                .then(message =>{
-                    let fel={status:response.status,
-                        text: response.statusText,
-                        url: response.url,
-                        message
-                    }
-
-                    throw fel
-                })
-        })
-        .then(data =>{
-            fyllLista(data)
-        })
-        .catch(error => {
-            console.error(error)
-        })
+    document.getElementById("hamta").addEventListener("click", hamtaNyData)
+    document.getElementById("hamta-mobil").addEventListener("click", hamtaNyData)
 }
 
 function rensaLista() {
-    // Vi hämtar alla containrar (både mobil och desktop)
-    let listor = document.querySelectorAll(".lista-container");
-    listor.forEach(lista => {
-        lista.innerHTML = "";
-    });
+    document.querySelectorAll(".lista-container").forEach(el => el.innerHTML = "")
 }
 
 function setDateInterval() {
-    let idag = new Date();
-    let aktuellManad = idag.getMonth();
+    const idag = new Date()
+    const manad = idag.getMonth()
+    const fran = new Date(idag.getFullYear(), manad, 1, 24).toISOString().substring(0, 10)
+    const till = new Date(idag.getFullYear(), manad + 1, 0, 24).toISOString().substring(0, 10)
 
-    // Skapar datumobjekt
-    let fromDatum = new Date(idag.getFullYear(), aktuellManad, 1, 24);
-    let toDatum = new Date(idag.getFullYear(), aktuellManad + 1, 0, 24);
-
-    let fromStr = fromDatum.toISOString().substring(0, 10);
-    let toStr = toDatum.toISOString().substring(0, 10);
-
-
-    // Sätt värden i Desktop-fälten
-    document.getElementById("franDatum").value = fromStr;
-    document.getElementById("tillDatum").value = toStr;
-
-
-    // Sätt värden i Mobil-fälten (viktigt!)
-    document.getElementById("franDatum-mobil").value = fromStr;
-    document.getElementById("tillDatum-mobil").value = toStr;
+    document.getElementById("franDatum").value = fran
+    document.getElementById("tillDatum").value = till
+    document.getElementById("franDatum-mobil").value = fran
+    document.getElementById("tillDatum-mobil").value = till
 }
 
+function getCompilation() {
+    const franDatum = document.getElementById("franDatum").value
+    const tillDatum = document.getElementById("tillDatum").value
 
-
-
-
+    fetch(`api/compilation/${franDatum}/${tillDatum}`)
+        .then(response => {
+            if (response.ok) return response.json()
+            return response.json()
+                .catch(() => null)
+                .then(message => {
+                    throw { status: response.status, text: response.statusText, url: response.url, message }
+                })
+        })
+        .then(data => fyllLista(data))
+        .catch(error => console.error("Fel:", error))
+}
 
 function fyllLista(data) {
-    // Hämta alla containrar där vi vill lägga till rader
-    let targets = document.querySelectorAll(".lista-container");
+    const targets = document.querySelectorAll(".lista-container")
+    let totalMinuter = 0
 
-
-
-    // Loopa igenom varje container (en för mobil, en för desktop)
     targets.forEach(target => {
+        target.innerHTML = ""
 
+        data.tasks.forEach(t => {
+            const rad = document.createElement("ul")
+            rad.className = "lista"
+            rad.innerHTML = `<li>${t.aktivitet}</li><li class="right">${t.time}</li>`
+            target.appendChild(rad)
 
+            // Räkna ihop total tid
+            const delar = t.time.split(":")
+            totalMinuter += parseInt(delar[0]) * 60 + parseInt(delar[1])
+        })
+    })
 
-        // Loopa igenom all data för varje container
+    // Visa total tid
+    const timmar = Math.floor(totalMinuter / 60)
+    const minuter = totalMinuter % 60
+    const totalText = `TOTAL TID: ${timmar}h ${minuter}min`
+    document.getElementById("total-desktop").textContent = totalText
+    document.getElementById("total-mobile").textContent  = totalText
+}
 
-        for (let i = 0; i < data.tasks.length; i++) {
-            let rad = document.createElement("ul");
-            rad.className = "lista";
-            rad.innerHTML = `<li>${data.tasks[i].activity}</li><li class="right">${data.tasks[i].time}</li>`;
-            target.appendChild(rad);
-        }
-    });
+function hamtaNyData() {
+    rensaLista()
+    getCompilation()
 }
