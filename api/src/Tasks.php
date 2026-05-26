@@ -15,7 +15,6 @@ function tasklists(Route $route): Response {
     } catch (Exception $exc) {
         return new Response($exc->getMessage(), 400);
     }
-
     return new Response("Okänt anrop", 400);
 }
 
@@ -38,6 +37,7 @@ function tasks(Route $route, array $postData): Response {
     } catch (Exception $exc) {
         return new Response($exc->getMessage(), 400);
     }
+    return new Response("Okänt anrop", 400);
 }
 
 /**
@@ -47,58 +47,63 @@ function tasks(Route $route, array $postData): Response {
  */
 function hamtaSida(string $sida): Response {
     // Kontrollera indata
-    $sidnummer=filter_var($sida, FILTER_VALIDATE_INT);
+    $sidnummer = filter_var($sida, FILTER_VALIDATE_INT);
 
-    if($sidnummer === false){
+    if ($sidnummer === false) {
         $retur = new stdClass();
         $retur->error = ["Bad request", "Ogiltigt sidnummer"];
-
         return new Response($retur, 400);
-    } elseif ($sidnummer<1) {
+    } elseif ($sidnummer < 1) {
         $retur = new stdClass();
         $retur->error = ["Bad request", "Sidnummer ska vara större än noll"];
-
         return new Response($retur, 400);
     }
-    // Hämta antal poster per sida
-    $settings=new Settings();
-    $posterPerSida=$settings->recordsPerPage;
 
+    // Hämta antal poster per sida
+    $settings = new Settings();
+    $posterPerSida = $settings->recordsPerPage;
 
     // Koppla databas
-$db=connectDb();
+    $db = connectDb();
 
     // Skicka fråga om antal poster
-    $result=$db->query("SELECT COUNT(*) FROM uppgifter");
-    $antalRader=$result->fetchColumn();
-    $antalSidor= ceil($antalRader/$posterPerSida);
+    $result = $db->query("SELECT COUNT(*) FROM uppgifter");
+    $antalRader = $result->fetchColumn();
+    $antalSidor = ceil($antalRader / $posterPerSida);
+
+    // Tom databas
+    if ($antalSidor === 0) {
+        $svar = new stdClass();
+        $svar->pages = 0;
+        $svar->tasks = [];
+        return new Response($svar);
+    }
 
     // Kontrollera begärd sida
-    If($sidnummer>$antalSidor){
+    if ($sidnummer > $antalSidor) {
         $retur = new stdClass();
-        $retur->error=["Bad request", "Det finns bara $antalSidor"];
-
+        $retur->error = ["Bad request", "Det finns bara $antalSidor sidor"];
         return new Response($retur, 400);
     }
+
     // Skicka fråga för aktuell sida
     $firstRecord = $sidnummer * $posterPerSida - $posterPerSida;
-    $result = $db->query ("SELECT uppgifter.id, aktivitet_id, datum, varaktighet,aktivitet, beskrivning 
+    $result = $db->query("SELECT uppgifter.id, aktivitet_id, datum, varaktighet, aktivitet, beskrivning 
     FROM uppgifter
-    INNER JOIN aktiviteter ON aktiviteter.id=aktivitet_id
+    INNER JOIN aktiviteter ON aktiviteter.id = aktivitet_id
     ORDER BY datum LIMIT $firstRecord, $posterPerSida");
-
 
     // Returnera svar
     $retur = [];
     foreach ($result->fetchAll() as $row) {
-        $post=new stdClass();
-        $post->id=$row['id'];
-        $post->activityId=$row['aktivitet_id'];
-        $post->date=$row['datum'];
-        $post->time=$row['varaktighet'];
-        $post->activity=$row['aktivitet'];
-        $post->description=$row['beskrivning'];
-        $retur[]=$post;
+        $post = new stdClass();
+        $post->id = $row['id'];
+        $post->activityId = $row['aktivitet_id'];
+        $post->date = $row['datum'];
+        $post->time = $row['varaktighet'];
+        $post->activity = $row['aktivitet'];
+        $post->description = $row['beskrivning'];
+        $retur[] = $post;
     }
 
     $svar = new stdClass();

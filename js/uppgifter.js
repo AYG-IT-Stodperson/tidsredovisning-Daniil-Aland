@@ -98,12 +98,8 @@ function redigeraUppgift(id) {
 function alertDelete(id) {
     if (!confirm(`Vill du radera uppgiften med id=${id}?`)) return
 
-    let formData = new FormData()
-    formData.append("action", "delete")
-
     fetch(`api/task/${id}`, {
-        method: "POST",
-        body: formData
+        method: "DELETE"
     })
         .then(response => {
             if (response.ok) return response.json()

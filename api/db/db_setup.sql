@@ -14,18 +14,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- Dumpar databasstruktur för tidapp_db
-CREATE DATABASE IF NOT EXISTS `tidapp_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `tidapp_db`;
-
 -- Dumpar struktur för tabell tidapp_db.aktiviteter
 CREATE TABLE IF NOT EXISTS `aktiviteter` (
   `id` int NOT NULL AUTO_INCREMENT,
   `aktivitet` varchar(50) COLLATE utf8mb4_swedish_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `aktivitet` (`aktivitet`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 -- Dataexport var bortvalt.
 
@@ -39,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `uppgifter` (
   PRIMARY KEY (`id`),
   KEY `FK_uppgifter_aktiviteter` (`aktivitet_id`),
   CONSTRAINT `FK_uppgifter_aktiviteter` FOREIGN KEY (`aktivitet_id`) REFERENCES `aktiviteter` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=454 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 -- Dataexport var bortvalt.
 

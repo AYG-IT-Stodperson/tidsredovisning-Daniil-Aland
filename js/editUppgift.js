@@ -96,20 +96,23 @@ async function sparaUppgift(uppgiftId) {
     if (!valideraFormular()) return
 
     let formData = new FormData()
-    formData.set("action", "save")
     formData.set("activityId", document.getElementById("uppgift-aktivitet").value)
     formData.set("date",       document.getElementById("uppgift-datum").value)
     formData.set("time",       document.getElementById("uppgift-tid").value)
     formData.set("description", document.getElementById("uppgift-beskrivning").value.trim())
 
     let response = await fetch(`api/task/${uppgiftId ?? ""}`, {
-        method: "POST",
+        method: uppgiftId ? "PUT" : "POST",
         body: formData
     })
 
     if (!response.ok) {
         alert("Kunde inte spara uppgift, kontrollera konsolen")
-        console.error(await response.json())
+        try {
+            console.error(await response.json())
+        } catch {
+            console.error("Servern skickade inget JSON-svar")
+        }
         return
     }
 
