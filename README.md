@@ -1,4 +1,4 @@
-Tidapp – Tidsredovisning
+# Tidapp – Tidsredovisning
 
 En webbaserad tidsredovisningsapplikation byggd med HTML, CSS, JavaScript och PHP. Projektet skapades som en skoluppgift inom AYG-IT24 via GitHub Classroom.
 
