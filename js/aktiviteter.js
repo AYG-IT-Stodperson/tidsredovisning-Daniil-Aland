@@ -1,20 +1,5 @@
 window.onload = () => {
-    rensaLista()
-    // setDateInterval()
     getActivities()
-}
-
-function rensaLista() {
-    document.getElementById("tom").innerHTML = ""
-}
-
-function setDateInterval() {
-    let idag = new Date()
-    let aktuellManad = idag.getMonth()
-    let fromDatum = new Date(idag.getFullYear(), aktuellManad, 1, 24)
-    let toDatum = new Date(idag.getFullYear(), aktuellManad + 1, 0, 24)
-    document.getElementById("franDatum").value = fromDatum.toISOString().substring(0, 10)
-    document.getElementById("tillDatum").value = toDatum.toISOString().substring(0, 10)
 }
 
 async function getActivities() {
@@ -25,16 +10,8 @@ async function getActivities() {
             fyllLista(data)
         } else {
             let message = null
-            try {
-                message = await response.json()
-            } finally {
-                let fel = {
-                    status: response.status,
-                    text: response.statusText,
-                    url: response.url,
-                    message
-                }
-                throw fel
+            try { message = await response.json() } finally {
+                throw { status: response.status, text: response.statusText, url: response.url, message }
             }
         }
     } catch (e) {
@@ -44,21 +21,40 @@ async function getActivities() {
 }
 
 function fyllLista(data) {
-    let lista = document.getElementById("tom")
-    lista.innerHTML = ""
+    const targets = document.querySelectorAll(".item-list, .item-list-mobil")
+    if (targets.length === 0) return
 
-    data.activities.forEach(a => {
-        let div = document.createElement("div")
-        div.className = "item activity-card"
-        div.innerHTML = `
-            <span class="activity-name">${a.activity}</span>
-            ${a.datum ? `<span class="activity-date">${a.datum}</span>` : ""}
-            <div class="action-buttons">
-                <button class="btn-outline" onclick="redigeraAktivitet(${a.id})">Redigera</button>
-                <button class="btn-outline btn-delete" onclick="alertDelete(${a.id})">Radera</button>
-            </div>
-        `
-        lista.appendChild(div)
+    targets.forEach(target => {
+        target.innerHTML = ""
+        const isMobile = target.classList.contains("item-list-mobil")
+
+        data.activities.forEach(a => {
+            if (isMobile) {
+                const card = document.createElement("div")
+                card.className = "task-card-mobile"
+                card.innerHTML = `
+                    <div class="task-info">
+                        <div class="task-main"><strong>${a.activity}</strong></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-outline" onclick="redigeraAktivitet(${a.id})">Redigera</button>
+                        <button class="btn-outline btn-delete" onclick="alertDelete(${a.id})">Radera</button>
+                    </div>
+                `
+                target.appendChild(card)
+            } else {
+                const div = document.createElement("div")
+                div.className = "item activity-card"
+                div.innerHTML = `
+                    <span class="activity-name">${a.activity}</span>
+                    <div class="action-buttons">
+                        <button class="btn-outline" onclick="redigeraAktivitet(${a.id})">Redigera</button>
+                        <button class="btn-outline btn-delete" onclick="alertDelete(${a.id})">Radera</button>
+                    </div>
+                `
+                target.appendChild(div)
+            }
+        })
     })
 }
 
@@ -72,10 +68,7 @@ function alertDelete(id) {
     let formData = new FormData()
     formData.append("action", "delete")
 
-    fetch(`api/activity/${id}`, {
-        method: "POST",
-        body: formData
-    })
+    fetch(`api/activity/${id}`, { method: "POST", body: formData })
         .then(response => {
             if (response.ok) return response.json()
             else throw response.json()
@@ -88,7 +81,7 @@ function alertDelete(id) {
                 alert(data.message.join("\r\n"))
             }
         })
-        .catch(async (error) => {
+        .catch(async error => {
             let meddelande = (await error).error
             alert(meddelande.join("\r\n"))
         })

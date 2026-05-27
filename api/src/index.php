@@ -2,11 +2,6 @@
 declare(strict_types=1);
 
 
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
-
-require_once './src/routes.php';
-
 require_once './src/Routes.php';
 require_once './src/funktioner.php';
 require_once './src/Route.php';

@@ -8,11 +8,12 @@
 </head>
 <body>
 
+<!-- DESKTOP VY -->
 
 <div class="desktop-wrapper">
+
+
     <header class="header">Tidapp - Mina Aktiviteter</header>
-
-
     <div class="main-layout">
         <aside class="sidebar">
             <a href="index.html" class="nav-item">HEM</a>
@@ -20,33 +21,62 @@
             <a href="uppgifter.html" class="nav-item">UPPGIFTER</a>
             <a href="sammanstallning.html" class="nav-item">TOTALT</a>
         </aside>
-
         <main class="content">
+
+
+
             <h2 id="form-titel">Ny aktivitet</h2>
-
-
             <div class="log-form">
                 <div class="input-field edit-id-field">
                     <span id="visa-id" class="id-text"></span>
-
-
-
                     <label>Namn på aktivitet</label>
                     <input type="text" id="aktivitet-namn" placeholder="Ex: Simning, Promenad...">
-
-
                 </div>
 
                 <div class="edit-buttons">
                     <button class="save-btn" id="spara-btn">Spara</button>
                     <a href="aktiviteter.html" class="cancel-btn">Avbryt</a>
                 </div>
-
             </div>
         </main>
     </div>
 </div>
 
+<!-- MOBIL VY -->
+
+<div class="mobile-wrapper">
+    <header class="mobile-header">
+        Tidapp - Aktiviteter
+        <a href="aktiviteter.html" class="cancel-btn" style="font-size:13px;">✕</a>
+    </header>
+
+
+    <div class="mobile-content">
+
+
+        <h2 id="form-titel-mobil" style="padding: 16px 16px 0;">Ny aktivitet</h2>
+        <div class="log-form" style="padding: 16px;">
+            <div class="input-field">
+                <span id="visa-id-mobil" class="id-text"></span>
+                <label>Namn på aktivitet</label>
+                <input type="text" id="aktivitet-namn-mobil" placeholder="Ex: Simning, Promenad...">
+            </div>
+
+            <div class="edit-buttons">
+                <button class="save-btn" id="spara-btn-mobil">Spara</button>
+                <a href="aktiviteter.html" class="cancel-btn">Avbryt</a>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="mobile-footer">
+        <a href="index.html" class="nav-item">Hem</a>
+        <a href="aktiviteter.html" class="nav-item active">Aktiviteter</a>
+        <a href="uppgifter.html" class="nav-item">Uppgifter</a>
+        <a href="sammanstallning.html" class="nav-item">Totalt</a>
+    </footer>
+</div>
 
 
 <script src="js/editAktivitet.js"></script>

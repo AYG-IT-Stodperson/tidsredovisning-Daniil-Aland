@@ -403,3 +403,25 @@ body {
 .log-form {
     padding-top: 10px;
 }
+
+/* Desktop: visa desktop, dölj mobil */
+@media (min-width: 600px) {
+    .mobile-wrapper {
+        display: none;
+    }
+    .desktop-wrapper {
+        display: block;
+    }
+}
+
+/* Mobil: visa mobil, dölj desktop */
+@media (max-width: 599px) {
+    .desktop-wrapper {
+        display: none;
+    }
+    .mobile-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+}

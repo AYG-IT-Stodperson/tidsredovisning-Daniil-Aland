@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search)
     aktivitetsId = params.has("id") ? parseInt(params.get("id")) : null
 
-    // Hämta alla aktiviteter från API:et
     fetch("api/activity")
         .then(response => {
             if (response.ok) return response.json()
@@ -13,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
             allaAktiviteter = data.activities
-
             if (aktivitetsId !== null) {
                 fillForm(aktivitetsId)
             } else {
@@ -22,22 +20,40 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error(error))
 
-    document.getElementById("spara-btn").addEventListener("click", sparaAktivitet)
+    document.getElementById("spara-btn")?.addEventListener("click", sparaAktivitet)
+    document.getElementById("spara-btn-mobil")?.addEventListener("click", sparaAktivitet)
 })
 
 function fillForm(id) {
     const a = allaAktiviteter.find(a => a.id === id)
     if (!a) return
-    document.getElementById("form-titel").textContent = "Redigera aktivitet"
-    document.getElementById("visa-id").textContent    = `ID: ${a.id}`
-    document.getElementById("aktivitet-namn").value   = a.activity
+
+    document.getElementById("form-titel")?.textContent && (document.getElementById("form-titel").textContent = "Redigera aktivitet")
+    document.getElementById("form-titel-mobil")?.textContent && (document.getElementById("form-titel-mobil").textContent = "Redigera aktivitet")
+
+    document.getElementById("visa-id")?.textContent && (document.getElementById("visa-id").textContent = `ID: ${a.id}`)
+    document.getElementById("visa-id-mobil")?.textContent && (document.getElementById("visa-id-mobil").textContent = `ID: ${a.id}`)
+
+    document.getElementById("aktivitet-namn")?.setAttribute("value", a.activity)
+    document.getElementById("aktivitet-namn-mobil")?.setAttribute("value", a.activity)
 }
 
 function emptyForm() {
     document.getElementById("form-titel").textContent = "Ny aktivitet"
-    document.getElementById("visa-id").textContent    = ""
-    document.getElementById("aktivitet-namn").value   = ""
+    document.getElementById("form-titel-mobil").textContent = "Ny aktivitet"
+    document.getElementById("visa-id").textContent = ""
+    document.getElementById("visa-id-mobil").textContent = ""
+    document.getElementById("aktivitet-namn").value = ""
+    document.getElementById("aktivitet-namn-mobil").value = ""
     document.getElementById("aktivitet-namn").focus()
+}
+
+function getNamn() {
+    const desktop = document.getElementById("aktivitet-namn")
+    const mobil = document.getElementById("aktivitet-namn-mobil")
+    if (desktop && desktop.offsetParent !== null) return desktop.value.trim()
+    if (mobil && mobil.offsetParent !== null) return mobil.value.trim()
+    return desktop?.value.trim() ?? ""
 }
 
 async function sparaAktivitet() {
@@ -48,7 +64,7 @@ async function sparaAktivitet() {
 
     let formData = new FormData()
     formData.set("action", "save")
-    formData.set("activity", document.getElementById("aktivitet-namn").value.trim())
+    formData.set("activity", getNamn())
 
     let response = await fetch(`api/activity/${aktivitetsId ?? ""}`, {
         method: "POST",
@@ -72,24 +88,27 @@ async function sparaAktivitet() {
 }
 
 function verifieraForm() {
-    let returKod = true
+    const namn = getNamn()
 
     document.getElementById("aktivitet-namn").setCustomValidity("")
+    document.getElementById("aktivitet-namn-mobil").setCustomValidity("")
 
-    let aktivitet = document.getElementById("aktivitet-namn").value.trim()
-
-    if (aktivitet === "") {
+    if (namn === "") {
         alert("Aktiviteten måste finnas")
         document.getElementById("aktivitet-namn").setCustomValidity("Aktiviteten måste finnas")
-        returKod = false
-    } else if (allaAktiviteter.find(a =>
-        a.activity.toLocaleLowerCase() === aktivitet.toLocaleLowerCase() &&
+        document.getElementById("aktivitet-namn-mobil").setCustomValidity("Aktiviteten måste finnas")
+        return false
+    }
+
+    if (allaAktiviteter.find(a =>
+        a.activity.toLocaleLowerCase() === namn.toLocaleLowerCase() &&
         a.id !== aktivitetsId
     )) {
         alert("Aktiviteten finns redan")
         document.getElementById("aktivitet-namn").setCustomValidity("Aktiviteten finns redan")
-        returKod = false
+        document.getElementById("aktivitet-namn-mobil").setCustomValidity("Aktiviteten finns redan")
+        return false
     }
 
-    return returKod
+    return true
 }

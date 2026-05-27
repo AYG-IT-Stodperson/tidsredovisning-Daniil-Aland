@@ -1,7 +1,7 @@
 <?php
 
 declare (strict_types=1);
-require_once __DIR__ . '/activities.php';
+require_once __DIR__ . '/Activities.php';
 
 function tasklists(Route $route): Response {
 
