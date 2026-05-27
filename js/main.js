@@ -13,3 +13,4 @@ if(document.getElementById("nyAktivitet")) {
         window.location.href = "editAktivitet.html"
     })
 }
+

@@ -28,32 +28,60 @@ function fillForm(id) {
     const a = allaAktiviteter.find(a => a.id === id)
     if (!a) return
 
-    document.getElementById("form-titel")?.textContent && (document.getElementById("form-titel").textContent = "Redigera aktivitet")
-    document.getElementById("form-titel-mobil")?.textContent && (document.getElementById("form-titel-mobil").textContent = "Redigera aktivitet")
+    // Ändra titlar i formulären
+    const formTitel = document.getElementById("form-titel")
+    if (formTitel) formTitel.textContent = "Redigera aktivitet"
 
-    document.getElementById("visa-id")?.textContent && (document.getElementById("visa-id").textContent = `ID: ${a.id}`)
-    document.getElementById("visa-id-mobil")?.textContent && (document.getElementById("visa-id-mobil").textContent = `ID: ${a.id}`)
+    const formTitelMobil = document.getElementById("form-titel-mobil")
+    if (formTitelMobil) formTitelMobil.textContent = "Redigera aktivitet"
 
-    document.getElementById("aktivitet-namn")?.setAttribute("value", a.activity)
-    document.getElementById("aktivitet-namn-mobil")?.setAttribute("value", a.activity)
+    // Visa ID
+    const visaId = document.getElementById("visa-id")
+    if (visaId) visaId.textContent = `ID: ${a.id}`
+
+    const visaIdMobil = document.getElementById("visa-id-mobil")
+    if (visaIdMobil) visaIdMobil.textContent = `ID: ${a.id}`
+
+    // FIX: Sätter .value istället för setAttribute för att det ska fungera i mobilvyn
+    const inputNamn = document.getElementById("aktivitet-namn")
+    if (inputNamn) inputNamn.value = a.activity
+
+    const inputNamnMobil = document.getElementById("aktivitet-namn-mobil")
+    if (inputNamnMobil) inputNamnMobil.value = a.activity
 }
 
 function emptyForm() {
-    document.getElementById("form-titel").textContent = "Ny aktivitet"
-    document.getElementById("form-titel-mobil").textContent = "Ny aktivitet"
-    document.getElementById("visa-id").textContent = ""
-    document.getElementById("visa-id-mobil").textContent = ""
-    document.getElementById("aktivitet-namn").value = ""
-    document.getElementById("aktivitet-namn-mobil").value = ""
-    document.getElementById("aktivitet-namn").focus()
+    const formTitel = document.getElementById("form-titel")
+    if (formTitel) formTitel.textContent = "Ny aktivitet"
+
+    const formTitelMobil = document.getElementById("form-titel-mobil")
+    if (formTitelMobil) formTitelMobil.textContent = "Ny aktivitet"
+
+    const visaId = document.getElementById("visa-id")
+    if (visaId) visaId.textContent = ""
+
+    const visaIdMobil = document.getElementById("visa-id-mobil")
+    if (visaIdMobil) visaIdMobil.textContent = ""
+
+    const inputNamn = document.getElementById("aktivitet-namn")
+    if (inputNamn) inputNamn.value = ""
+
+    const inputNamnMobil = document.getElementById("aktivitet-namn-mobil")
+    if (inputNamnMobil) inputNamnMobil.value = ""
+
+    inputNamn?.focus()
 }
 
 function getNamn() {
     const desktop = document.getElementById("aktivitet-namn")
     const mobil = document.getElementById("aktivitet-namn-mobil")
+
+    // Kollar vilket element som faktiskt visas på skärmen just nu (display: none ger offsetParent === null)
     if (desktop && desktop.offsetParent !== null) return desktop.value.trim()
     if (mobil && mobil.offsetParent !== null) return mobil.value.trim()
-    return desktop?.value.trim() ?? ""
+
+    // Fallback om webbläsaren inte har ritat färdigt eller om CSS saknas
+    return desktop?.value.trim() || mobil?.value.trim() || ""
 }
 
 async function sparaAktivitet() {
@@ -89,14 +117,16 @@ async function sparaAktivitet() {
 
 function verifieraForm() {
     const namn = getNamn()
+    const desktop = document.getElementById("aktivitet-namn")
+    const mobil = document.getElementById("aktivitet-namn-mobil")
 
-    document.getElementById("aktivitet-namn").setCustomValidity("")
-    document.getElementById("aktivitet-namn-mobil").setCustomValidity("")
+    if (desktop) desktop.setCustomValidity("")
+    if (mobil) mobil.setCustomValidity("")
 
     if (namn === "") {
         alert("Aktiviteten måste finnas")
-        document.getElementById("aktivitet-namn").setCustomValidity("Aktiviteten måste finnas")
-        document.getElementById("aktivitet-namn-mobil").setCustomValidity("Aktiviteten måste finnas")
+        if (desktop) desktop.setCustomValidity("Aktiviteten måste finnas")
+        if (mobil) mobil.setCustomValidity("Aktiviteten måste finnas")
         return false
     }
 
@@ -105,8 +135,8 @@ function verifieraForm() {
         a.id !== aktivitetsId
     )) {
         alert("Aktiviteten finns redan")
-        document.getElementById("aktivitet-namn").setCustomValidity("Aktiviteten finns redan")
-        document.getElementById("aktivitet-namn-mobil").setCustomValidity("Aktiviteten finns redan")
+        if (desktop) desktop.setCustomValidity("Aktiviteten finns redan")
+        if (mobil) mobil.setCustomValidity("Aktiviteten finns redan")
         return false
     }
 
